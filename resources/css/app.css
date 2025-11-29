@@ -34,7 +34,7 @@
     }
 
     .btn-blue{
-        @apply w-full bg-blue-600 hover:bg-blue-800 text-white py-2 rounded-lg font-medium transition
+        @apply w-full bg-blue-600 hover:bg-blue-800 text-white p-2 rounded-lg font-medium transition
     }
 
     /* h1/2/3... customizable */
