@@ -29,8 +29,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-// LOGIN/SIGN UP
+// USER
 Route::post('/login/submit', [UserController::class, 'login'])->name('login.submit');
 Route::post('/resgister/submit', [UserController::class, 'store'])->name('register.submit');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+Route::get('/user/{user_id}', [UserController::class, 'show'])->name('account');
+
 
 

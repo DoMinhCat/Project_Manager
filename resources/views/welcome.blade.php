@@ -16,6 +16,7 @@
             </div>
         </div>
     @endif
+
     <!-- HERO SECTION -->
     <section class="container1 text-center responsive">
         <h1 class="title1 text-4xl font-bold mb-4">

@@ -49,13 +49,22 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $name = Auth::user()->name;
-            return redirect('/')->with('success', "Welcome back, $name!");
+            return redirect('/dashboard')->with('success', "Welcome back, $name!");
         }
 
         // if login fails:
         return back()->withErrors([
             'email' => 'Email or password incorrect.',
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/')->with('success', 'You have been logged out.');
     }
 
     /**
