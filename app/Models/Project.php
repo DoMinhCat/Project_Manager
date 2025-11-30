@@ -16,9 +16,17 @@ class Project extends Model
         'status',
     ];
 
-    // Relationship: One project → many tasks
+    protected $casts = [
+        'due_at' => 'datetime',
+    ];
+
+    // Relationship: One project -> many tasks
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+    public function members()
+    {
+        return $this->hasMany(User::class);
     }
 }
