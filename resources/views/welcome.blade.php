@@ -1,5 +1,4 @@
 <x-layout>
-
     {{-- ERROR/SUCCESS MSG --}}
     @if(session('success'))
         <div class="w-full responsive">

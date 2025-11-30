@@ -14,6 +14,7 @@ class Project extends Model
         'description',
         'due_at',
         'status',
+        'owner_id',
     ];
 
     protected $casts = [
@@ -25,8 +26,14 @@ class Project extends Model
     {
         return $this->hasMany(Task::class);
     }
+
     public function members()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class, 'project_user');
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
 }

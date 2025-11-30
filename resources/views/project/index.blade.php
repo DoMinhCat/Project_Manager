@@ -1,61 +1,149 @@
-@guest
-    <div class="w-full responsive">
-        <flux:callout icon="x-mark" color="red">
-            <flux:callout.heading>You need to sign in to view this page.</flux:callout.heading>
-            <x-slot name="actions">
-                <flux:button class="btn-blue" href="/login">Sign in</flux:button>
-            </x-slot>
-        </flux:callout>
-    </div>
-@endguest
+<x-layout>
+    @guest
+        <x-unauth></x-unauth>
+    @endguest
 
-@auth
-    @if($projects->count() < 1)
-        <x-layout>
-            <div class="container1 text-center">
-                <h2>You haven't created any project yet</h2>
-                <a href="{{ route('new_project') }}" class="btn-blue">
-                    Create my first project
-                </a>
-            </div>
-        </x-layout>
-    @else
-        <x-layout>
-            @foreach ($projects as $project)
-                <a href="{{ route('one_project', $project->id) }}">
-                    <div
-                        class="card dark:bg-neutral-900 border dark:border-neutral-800 hover:shadow-lg transition cursor-pointer p-4 rounded-xl">
-                        <div class="flex justify-between items-center">
-                            <div class="flex flex-col">
-                                <p> Project's name: {{ $project->title }} </p>
-                                <p> Owner: {{ $project->owner->name ?? 'N/A' }} </p>
-                            </div>
-                            <div>
-                                <span class="px-2 py-1 rounded-lg text-xs font-medium 
-                                                    @if($project->status === 'completed') bg-green-500/20 text-green-400 
-                                                    @elseif($project->status === 'in-progress') bg-blue-500/20 text-blue-400
-                                                    @else bg-neutral-500/20 text-neutral-400 
-                                                    @endif
-                                                ">
-                                    {{ ucfirst($project->status) }}
-                                </span>
+    @auth
+        <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                {{-- Success Message --}}
+                @if(session('success'))
+                    <div class="w-full responsive mb-4">
+                        <div x-data="{ visible: true }" x-show="visible" x-collapse>
+                            <div x-show="visible" x-transition>
+                                <flux:callout icon="check" color="green">
+                                    <flux:callout.heading>{{ session('success') }}</flux:callout.heading>
 
+                                    <x-slot name="controls">
+                                        <flux:button icon="x-mark" variant="ghost" x-on:click="visible = false" />
+                                    </x-slot>
+                                </flux:callout>
                             </div>
                         </div>
+                    </div>
+                @endif
 
-                        @if ($project->due_at)
-                            <div class="mt-4 text-sm text-neutral-500">
-                                Deadline: {{ $project->due_at->format('d/m/Y')}}
-                            </div>
-                        @endif
+                {{-- Empty --}}
+                @if($projects->count() < 1)
+                    <div class="container1 text-center">
+                        <h2>You haven't created any project yet</h2>
+                        <a href="{{ route('new_project') }}" class="btn-blue">
+                            Create my first project </a>
+                    </div>
+                @else
+                    {{-- Header --}}
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                                My Projects
+                            </h1>
+                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                Manage and track all your projects in one place
+                            </p>
+                        </div>
+                        <a href="{{ route('new_project') }}"
+                            class="inline-flex items-center justify-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-150 ease-in-out shadow-sm hover:shadow-md">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            New Project
+                        </a>
+                    </div>
 
-                        <div class="mt-2 text-sm">
-                            <strong>{{ $project->tasks->count() . $project->tasks->count() > 1 ? 'tasks' : 'task' }} </strong>
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead class="bg-gray-50 dark:bg-gray-900">
+                                    <tr>
+                                        <th scope="col"
+                                            class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                                            Project
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                                            Status
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                                            Owner
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                                            Deadline
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                    @foreach ($projects as $project)
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150">
+                                            <td class="px-6 py-4">
+                                                <a href="{{ route('one_project', $project->id) }}" class="flex items-center group">
+
+                                                    <span
+                                                        class="font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                                        {{ $project->name }}
+                                                    </span>
+                                                </a>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <span
+                                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+                                                                                                                                        @if($project->status === 'completed') 
+                                                                                                                                            bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400
+                                                                                                                                        @elseif($project->status === 'in_progress') 
+                                                                                                                                            bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400
+                                                                                                                                        @else 
+                                                                                                                                            bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400
+                                                                                                                                        @endif">
+                                                    <span
+                                                        class="w-1.5 h-1.5 rounded-full mr-1.5
+                                                                                                                                            @if($project->status === 'completed') bg-green-500
+                                                                                                                                            @elseif($project->status === 'in_progress') bg-blue-500
+                                                                                                                                            @else bg-yellow-500
+                                                                                                                                            @endif">
+                                                    </span>
+                                                    {{ ucfirst(str_replace('_', ' ', $project->status)) }}
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <a href="{{ route('account', $project->owner->id) }}"
+                                                    class="flex items-center group">
+                                                    <span
+                                                        class="font-semibold text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                                        {{ $project->owner->name }}
+                                                    </span>
+                                                </a>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                @if($project->due_at)
+                                                    <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                                                        <svg class="w-4 h-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                        </svg>
+                                                        {{ $project->due_at->format('d/m/Y') }}
+                                                    </div>
+                                                @else
+                                                    <span class="text-sm text-gray-400 dark:text-gray-600">No deadline</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
-                </a>
-            @endforeach
-        </x-layout>
-    @endif
-@endauth
+                    <div class="mt-4 text-center">
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            Showing <span class="font-medium text-gray-900 dark:text-gray-100">{{ $projects->count() }}</span>
+                            project{{ $projects->count() !== 1 ? 's' : '' }}
+                        </p>
+                    </div>
+                @endif
+            </div>
+        </div>
+    @endauth
+</x-layout>

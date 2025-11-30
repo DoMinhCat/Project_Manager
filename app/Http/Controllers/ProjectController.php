@@ -29,7 +29,19 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        // create new proj
+        $validated = $request->validate([
+            'name'        => 'required|min:3|max:255',
+            'description' => 'nullable|max:1023',
+            'deadline'      => 'nullable|date|not_before_today',
+        ]);
+
+        $validated['owner_id'] = $request->user()->id;
+        // Create project
+        Project::create($validated);
+
+        return redirect()
+            ->route('all_projects')
+            ->with('success', $validated['name'] . ' has been successfully created.');
     }
 
     /**
