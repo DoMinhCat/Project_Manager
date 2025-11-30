@@ -26,13 +26,28 @@
                     <div
                         class="card dark:bg-neutral-900 border dark:border-neutral-800 hover:shadow-lg transition cursor-pointer p-4 rounded-xl">
                         <div class="flex justify-between items-center">
-                            <!-- Left side: Project name + owner -->
-                            <!-- Right side: Status badge -->
+                            <div class="flex flex-col">
+                                <p> Project's name: {{ $project->title }} </p>
+                                <p> Owner: {{ $project->owner->name ?? 'N/A' }} </p>
+                            </div>
+                            <div>
+                                <span class="px-2 py-1 rounded-lg text-xs font-medium 
+                                                    @if($project->status === 'completed') bg-green-500/20 text-green-400 
+                                                    @elseif($project->status === 'in-progress') bg-blue-500/20 text-blue-400
+                                                    @else bg-neutral-500/20 text-neutral-400 
+                                                    @endif
+                                                ">
+                                    {{ ucfirst($project->status) }}
+                                </span>
+
+                            </div>
                         </div>
 
-                        <div class="mt-4 text-sm text-neutral-500">
-                            Due: <date>
-                        </div>
+                        @if ($project->due_at)
+                            <div class="mt-4 text-sm text-neutral-500">
+                                Deadline: {{ $project->due_at->format('d/m/Y')}}
+                            </div>
+                        @endif
 
                         <div class="mt-2 text-sm">
                             <strong>{{ $project->tasks->count() . $project->tasks->count() > 1 ? 'tasks' : 'task' }} </strong>
