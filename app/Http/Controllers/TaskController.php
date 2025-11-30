@@ -51,9 +51,13 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Task $task)
+    public function show($project_id, $task_id)
     {
-        //
+        $task = Task::where('id', $task_id)->firstOrFail();
+        return view('task.task', [
+            'task' => $task,
+            'project' => $task->project
+        ]);
     }
 
     /**
