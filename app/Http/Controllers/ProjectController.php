@@ -30,9 +30,9 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'        => 'required|min:3|max:255',
-            'description' => 'nullable|max:1023',
-            'deadline'      => 'nullable|date|not_before_today',
+            'name'        => 'required|min:3|max:30',
+            'description' => 'nullable|max:511',
+            'due_at'      => 'nullable|date|not_before_today',
         ]);
 
         $validated['owner_id'] = $request->user()->id;
@@ -40,16 +40,16 @@ class ProjectController extends Controller
         Project::create($validated);
 
         return redirect()
-            ->route('all_projects')
+            ->route('project.all')
             ->with('success', $validated['name'] . ' has been successfully created.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($project_id)
+    public function show(Project $project)
     {
-        $project = Project::where('id', $project_id)->firstOrFail();
+        $project = Project::where('id', $project->id)->firstOrFail();
         return view('project.project', [
             'project' => $project,
             'tasks' => $project->tasks
@@ -77,6 +77,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+
+        return redirect()->route('project.all')->with('success', $project->name . ' has been deleted.' );
     }
 }

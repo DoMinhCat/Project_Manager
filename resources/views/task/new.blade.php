@@ -12,7 +12,7 @@
                 Create a task
             </h1>
 
-            <form action="{{ route('submit_task', ['project_id' => $project->id]) }}" method="POST" class="space-y-5">
+            <form action="{{ route('task.submit', $project) }}" method="POST" class="space-y-5">
                 @csrf
 
                 <flux:input class="txt-box" label="Title" name="title" placeholder="Give your task a title"

@@ -38,20 +38,22 @@ Route::get('/login', function () {
 })->name('login');
 Route::post('/login/submit', [UserController::class, 'login'])->name('login.submit');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
-Route::get('/user/{user_id}', [UserController::class, 'show'])->name('account');
+Route::get('/user/{user}', [UserController::class, 'show'])->name('account');
 
 // PROJECT
-Route::get('/projects', [ProjectController::class, 'index'])->name('all_projects');
+Route::get('/projects', [ProjectController::class, 'index'])->name('project.all');
 Route::get('/projects/new', function () {
     return view('project.new');
 })->name('new_project');
-Route::post('/projects/submit', [ProjectController::class, 'store'])->name('submit_project');
-Route::get('/projects/{project_id}', [ProjectController::class, 'show'])->name('one_project');
+Route::post('/projects/submit', [ProjectController::class, 'store'])->name('project.submit');
+Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('project.detail');
+Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('project.delete');
+
 
 // TASK
-Route::get('/projects/{project_id}/tasks/new', [TaskController::class, 'create'])->name('new_task');
-Route::post('/projects/{project_id}/tasks/submit', [TaskController::class, 'store'])->name('submit_task');
-Route::get('/projects/{project_id}/tasks/{task_id}', [TaskController::class, 'show'])->name('one_task');
+Route::get('/projects/{project}/tasks/new', [TaskController::class, 'create'])->name('task.new');
+Route::post('/projects/{project}/tasks/submit', [TaskController::class, 'store'])->name('task.submit');
+Route::get('/projects/{project}/tasks/{task}', [TaskController::class, 'show'])->name('task.detail');
 
 
 

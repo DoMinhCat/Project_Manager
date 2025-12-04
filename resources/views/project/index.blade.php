@@ -73,13 +73,18 @@
                                             class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                                             Deadline
                                         </th>
+                                        <th scope="col"
+                                            class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                            Actions
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200">
                                     @foreach ($projects as $project)
                                         <tr class="hover:bg-gray-50 transition-colors duration-150">
                                             <td class="px-6 py-4">
-                                                <a href="{{ route('one_project', $project->id) }}" class="flex items-center group">
+                                                <a href="{{ route('project.detail', $project->id) }}"
+                                                    class="flex items-center group">
 
                                                     <span
                                                         class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
@@ -118,6 +123,39 @@
                                                 @else
                                                     <span class="text-sm text-gray-400">No deadline</span>
                                                 @endif
+                                            </td>
+
+                                            {{-- Action --}}
+                                            <td class="px-6 py-4">
+                                                <flux:modal.trigger name="{{ $project->id }}">
+                                                    <flux:button size="sm" variant="danger">
+                                                        <flux:icon.trash />
+                                                    </flux:button>
+                                                </flux:modal.trigger>
+
+                                                <flux:modal :dismissible="false" name="{{ $project->id }}" class="min-w-88">
+                                                    <div class="space-y-6">
+                                                        <div>
+                                                            <flux:heading size="lg">Delete project?</flux:heading>
+                                                            <flux:text class="mt-2">
+                                                                You're about to delete this project and all its tasks.<br>
+                                                                This action cannot be reversed.
+                                                            </flux:text>
+                                                        </div>
+                                                        <div class="flex gap-2">
+                                                            <flux:spacer />
+                                                            <flux:modal.close>
+                                                                <flux:button variant="ghost">Cancel</flux:button>
+                                                            </flux:modal.close>
+                                                            <form action="{{ route('project.delete', $project) }}" method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+
+                                                                <flux:button variant="danger" type="submit">Confirm</flux:button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </flux:modal>
                                             </td>
                                         </tr>
                                     @endforeach

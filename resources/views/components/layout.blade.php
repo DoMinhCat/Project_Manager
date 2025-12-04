@@ -24,7 +24,7 @@
                             <x-nav-link :href="route('dashboard')" :active="Route::is('dashboard')">
                                 Dashboard
                             </x-nav-link>
-                            <x-nav-link :href="route('all_projects')" :active="Route::is('all_projects') || Route::is('one_project') ">
+                            <x-nav-link :href="route('project.all')" :active="Route::is('project.all') || Route::is('project.detail') ">
                                 Projects
                             </x-nav-link>
                         @endauth
@@ -46,8 +46,7 @@
                                 </flux:button>
 
                                 <flux:menu>
-                                    <flux:menu.item href="{{ route('account', ['user_id' => Auth::user()->id]) }}"
-                                        icon="user">
+                                    <flux:menu.item href="{{ route('account', Auth::user()) }}" icon="user">
                                         Account
                                     </flux:menu.item>
                                     <form method="POST" action="{{ route('logout') }}">

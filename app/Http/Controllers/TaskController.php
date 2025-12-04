@@ -31,7 +31,7 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $project_id)
+    public function store(Request $request, Project $project)
     {
         $validated = $request->validate([
             'title'        => 'required|min:3|max:255',
@@ -39,21 +39,20 @@ class TaskController extends Controller
             'priority' => 'required',
             'deadline'      => 'nullable|date|not_before_today',
         ]);
-        $validated['project_id'] = $project_id;
+        $validated['project_id'] = $project->id;
         // Create project
         Task::create($validated);
 
         return redirect()
-        ->route('one_project', ['project_id' => $validated['project_id']])
+        ->route('project.detail', $project)
         ->with('success', $validated['title'] . ' has been successfully created.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($project_id, $task_id)
+    public function show(Project $project, Task $task)
     {
-        $task = Task::where('id', $task_id)->firstOrFail();
         return view('task.task', [
             'task' => $task,
             'project' => $task->project

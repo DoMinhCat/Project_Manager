@@ -39,7 +39,7 @@
             </div>
 
             <div class="mt-6 text-center">
-                <a href="{{ route('one_project', $project->id) }}" class="btn-blue inline-block">
+                <a href="{{ route('project.detail', $project->id) }}" class="btn-blue inline-block">
                     Back to {{ $project->name }}
                 </a>
             </div>

@@ -31,9 +31,9 @@
                     </h1>
 
                     @if($tasks->count() > 0)
-                        <a href="{{ route('new_task', $project->id) }}"
+                        <a href="{{ route('task.new', $project->id) }}"
                             class="inline-flex items-center justify-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 
-                                                                                                                              text-white font-medium rounded-lg shadow-sm hover:shadow-md transition">
+                                                                                                                                              text-white font-medium rounded-lg shadow-sm hover:shadow-md transition">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                             </svg>
@@ -46,7 +46,7 @@
                 @if($tasks->count() < 1)
                     <div class="container1 text-center">
                         <h2>No tasks yet for this project</h2>
-                        <a href="{{ route('new_task', $project->id) }}" class="btn-blue">Create a task</a>
+                        <a href="{{ route('task.new', $project->id) }}" class="btn-blue">Create a task</a>
                     </div>
                 @else
 
@@ -77,7 +77,7 @@
 
                                             {{-- Task --}}
                                             <td class="px-6 py-4">
-                                                <a href="{{ route('one_task', [$project->id, $task->id]) }}"
+                                                <a href="{{ route('task.detail', [$project->id, $task->id]) }}"
                                                     class="font-semibold text-gray-900 hover:text-blue-600 transition">
                                                     {{ $task->title }}
                                                 </a>
