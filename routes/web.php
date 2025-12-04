@@ -54,10 +54,5 @@ Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->nam
 Route::get('/projects/{project}/tasks/new', [TaskController::class, 'create'])->name('task.new');
 Route::post('/projects/{project}/tasks/submit', [TaskController::class, 'store'])->name('task.submit');
 Route::get('/projects/{project}/tasks/{task}', [TaskController::class, 'show'])->name('task.detail');
-
-
-
-
-
-
+Route::delete('/projects/{project}/tasks/{task}/delete', [TaskController::class, 'destroy'])->name('task.delete');
 

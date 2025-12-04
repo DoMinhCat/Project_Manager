@@ -49,8 +49,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        $project = Project::where('id', $project->id)->firstOrFail();
-        return view('project.project', [
+        return view('project.detail', [
             'project' => $project,
             'tasks' => $project->tasks
         ]);
@@ -78,7 +77,6 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
-
         return redirect()->route('project.all')->with('success', $project->name . ' has been deleted.' );
     }
 }

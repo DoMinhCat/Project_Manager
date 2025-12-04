@@ -33,7 +33,7 @@
                     @if($tasks->count() > 0)
                         <a href="{{ route('task.new', $project->id) }}"
                             class="inline-flex items-center justify-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 
-                                                                                                                                              text-white font-medium rounded-lg shadow-sm hover:shadow-md transition">
+                                                                                                                                                              text-white font-medium rounded-lg shadow-sm hover:shadow-md transition">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                             </svg>
@@ -115,6 +115,39 @@
                                                 @endif
                                             </td>
 
+                                            {{-- Action --}}
+                                            <td class="px-6 py-4">
+                                                <flux:modal.trigger name="{{ $task->id }}">
+                                                    <flux:button size="sm" variant="danger">
+                                                        <flux:icon.trash />
+                                                    </flux:button>
+                                                </flux:modal.trigger>
+
+                                                <flux:modal :dismissible="false" name="{{ $task->id }}" class="min-w-88">
+                                                    <div class="space-y-6">
+                                                        <div>
+                                                            <flux:heading size="lg">Delete task?</flux:heading>
+                                                            <flux:text class="mt-2">
+                                                                You're about to delete this task.<br>
+                                                                This action cannot be reversed.
+                                                            </flux:text>
+                                                        </div>
+                                                        <div class="flex gap-2">
+                                                            <flux:spacer />
+                                                            <flux:modal.close>
+                                                                <flux:button variant="ghost">Cancel</flux:button>
+                                                            </flux:modal.close>
+                                                            <form action="{{ route('task.delete', [$project, $task]) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+
+                                                                <flux:button variant="danger" type="submit">Confirm</flux:button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </flux:modal>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

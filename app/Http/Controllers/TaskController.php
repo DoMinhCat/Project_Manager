@@ -53,7 +53,7 @@ class TaskController extends Controller
      */
     public function show(Project $project, Task $task)
     {
-        return view('task.task', [
+        return view('task.detail', [
             'task' => $task,
             'project' => $task->project
         ]);
@@ -78,8 +78,10 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy(Project $project, Task $task)
     {
-        //
+        $task->delete();
+        return redirect()->route('project.detail', $project)->with('success', $task->name . ' has been deleted.' );
+    
     }
 }
