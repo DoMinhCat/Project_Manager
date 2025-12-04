@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->string('title');
+            $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('done')->default(false);
             $table->enum('status', ['in_progress', 'completed'])->default('in_progress'); 

@@ -4,24 +4,29 @@
     @endguest
 
     @auth
-        <div class="container1 w-full max-w-3xl mx-auto p-6">
+        <div class="container1 w-full max-w-3xl mx-auto mt-4 p-6">
+            {{-- Nav breadcrumbs --}}
+            <flux:breadcrumbs>
+                <flux:breadcrumbs.item href="{{ route('project.all') }}">Projects</flux:breadcrumbs.item>
+                <flux:breadcrumbs.item href="{{ route('project.detail', $project) }}">{{ $project->name }}</flux:breadcrumbs.item>
+                <flux:breadcrumbs.item href="#">{{ $task->name }}</flux:breadcrumbs.item>
+            </flux:breadcrumbs>
             <h1 class="title mb-6 text-center">Task Information</h1>
 
             <div class="space-y-3">
-                <p><strong>Title:</strong> {{ $task->title }}</p>
+                <p><strong>Title:</strong> {{ $task->name }}</p>
                 <p><strong>Description:</strong> {{ $task->description ?? '-' }}</p>
-
                 <p>
                     <strong>Priority:</strong> 
                     <span class="
-                        @if($task->priority === 1) text-green-500
-                        @elseif($task->priority === 2) text-yellow-500
-                        @else($task->priority === 3) text-red-500 @endif">
+                        @if($task->priority === "low") text-green-500
+                        @elseif($task->priority === "medium") text-yellow-500
+                        @else text-red-500 @endif">
                         
                         @switch($task->priority)
-                            @case(1) Low @break
-                            @case(2) Medium @break
-                            @case(3) High @break
+                            @case("low") Low @break
+                            @case("medium") Medium @break
+                            @case("high") High @break
                             @default N/A
                         @endswitch
                     </span>

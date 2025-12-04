@@ -15,8 +15,8 @@
             <form action="{{ route('task.submit', $project) }}" method="POST" class="space-y-5">
                 @csrf
 
-                <flux:input class="txt-box" label="Title" name="title" placeholder="Give your task a title"
-                    value="{{ old('title') }}" />
+                <flux:input class="txt-box" label="Name" name="name" placeholder="Give your task a name"
+                    value="{{ old('name') }}" />
 
                 <flux:textarea class="txt-box" label="Description" name="description" placeholder="Easy peasy task"
                     value="{{ old('description') }}" />

@@ -34,7 +34,7 @@ class TaskController extends Controller
     public function store(Request $request, Project $project)
     {
         $validated = $request->validate([
-            'title'        => 'required|min:3|max:255',
+            'name'        => 'required|min:3|max:255',
             'description' => 'nullable|max:1023',
             'priority' => 'required',
             'deadline'      => 'nullable|date|not_before_today',
@@ -45,7 +45,7 @@ class TaskController extends Controller
 
         return redirect()
         ->route('project.detail', $project)
-        ->with('success', $validated['title'] . ' has been successfully created.');
+        ->with('success', $validated['name'] . ' has been successfully created.');
     }
 
     /**
@@ -55,7 +55,7 @@ class TaskController extends Controller
     {
         return view('task.detail', [
             'task' => $task,
-            'project' => $task->project
+            'project' => $project
         ]);
     }
 

@@ -24,8 +24,14 @@
                     </div>
                 @endif
 
+                {{-- Nav breadcrumbs --}}
+                <flux:breadcrumbs>
+                    <flux:breadcrumbs.item href="{{ route('project.all') }}">Projects</flux:breadcrumbs.item>
+                    <flux:breadcrumbs.item href="#">{{ $project->name }}</flux:breadcrumbs.item>
+                </flux:breadcrumbs>
+
                 {{-- Header --}}
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-4 mb-8 gap-4">
                     <h1 class="text-3xl font-bold text-gray-900">
                         {{ $project->name }}
                     </h1>
@@ -33,7 +39,7 @@
                     @if($tasks->count() > 0)
                         <a href="{{ route('task.new', $project->id) }}"
                             class="inline-flex items-center justify-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 
-                                                                                                                                                              text-white font-medium rounded-lg shadow-sm hover:shadow-md transition">
+                                                                                                                                                                                              text-white font-medium rounded-lg shadow-sm hover:shadow-md transition">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                             </svg>
@@ -79,7 +85,7 @@
                                             <td class="px-6 py-4">
                                                 <a href="{{ route('task.detail', [$project->id, $task->id]) }}"
                                                     class="font-semibold text-gray-900 hover:text-blue-600 transition">
-                                                    {{ $task->title }}
+                                                    {{ $task->name }}
                                                 </a>
                                             </td>
 
