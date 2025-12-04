@@ -27,8 +27,7 @@
                 @if($projects->count() < 1)
                     <div class="container1 text-center">
                         <h2>You haven't created any project yet</h2>
-                        <a href="{{ route('new_project') }}" class="btn-blue">
-                            Create my first project </a>
+                        <x-projects.create-proj-modal></x-projects.create-proj-modal>
                     </div>
                 @else
                     {{-- Header --}}
@@ -42,13 +41,9 @@
                             </p>
                         </div>
                         @if($projects->count() > 0)
-                            <a href="{{ route('new_project') }}"
-                                class="inline-flex items-center justify-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-150 ease-in-out shadow-sm hover:shadow-md">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                </svg>
-                                New Project
-                            </a>
+                            <div>
+                                <x-projects.create-proj-modal></x-projects.create-proj-modal>
+                            </div>
                         @endif
                     </div>
 

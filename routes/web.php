@@ -42,17 +42,13 @@ Route::get('/user/{user}', [UserController::class, 'show'])->name('account');
 
 // PROJECT
 Route::get('/projects', [ProjectController::class, 'index'])->name('project.all');
-Route::get('/projects/new', function () {
-    return view('project.new');
-})->name('new_project');
-Route::post('/projects/submit', [ProjectController::class, 'store'])->name('project.submit');
+Route::post('/projects/create', [ProjectController::class, 'store'])->name('project.create');
 Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('project.detail');
 Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('project.delete');
 Route::patch('/projects/{project}', [ProjectController::class, 'update'])->name('project.update');
 
 // TASK
-Route::get('/projects/{project}/tasks/new', [TaskController::class, 'create'])->name('task.new');
-Route::post('/projects/{project}/tasks/submit', [TaskController::class, 'store'])->name('task.submit');
+Route::post('/projects/{project}/tasks/create', [TaskController::class, 'store'])->name('task.create');
 Route::get('/projects/{project}/tasks/{task}', [TaskController::class, 'show'])->name('task.detail');
 Route::delete('/projects/{project}/tasks/{task}', [TaskController::class, 'destroy'])->name('task.delete');
 Route::patch('/projects/{project}/tasks/{task}', [TaskController::class, 'update'])->name('task.update');

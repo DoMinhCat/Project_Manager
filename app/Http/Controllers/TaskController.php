@@ -21,11 +21,7 @@ class TaskController extends Controller
      */
     public function create($project_id)
     {
-        $project = Project::findOrFail($project_id);
-
-    return view('task.new', [
-        'project' => $project,
-    ]);
+        //
     }
 
     /**
