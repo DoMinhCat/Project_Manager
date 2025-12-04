@@ -36,7 +36,7 @@ class TaskController extends Controller
         $validated = $request->validate([
             'title'        => 'required|min:3|max:255',
             'description' => 'nullable|max:1023',
-            'priority' => 'required|min:1|max:3',
+            'priority' => 'required',
             'deadline'      => 'nullable|date|not_before_today',
         ]);
         $validated['project_id'] = $project_id;

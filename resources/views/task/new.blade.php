@@ -24,11 +24,10 @@
                 <flux:input class="txt-box" label="Due date" name="deadline" type="date"
                     placeholder="Choose the due date of the task" value="{{ old('deadline') }}" />
 
-                <flux:select label="Priority" description="1: Lowest, 3: Highest" name="priority" class="max-w-fit"
-                    placeholder="Choose a priority">
-                    <flux:select.option value="1">1</flux:select.option>
-                    <flux:select.option value="2">2</flux:select.option>
-                    <flux:select.option value="3">3</flux:select.option>
+                <flux:select label="Priority" name="priority" class="max-w-fit" placeholder="Choose a priority">
+                    <flux:select.option value="low">Low</flux:select.option>
+                    <flux:select.option value="medium">Medium</flux:select.option>
+                    <flux:select.option value="high">High</flux:select.option>
                 </flux:select>
 
                 <button type="submit" class="btn-blue">

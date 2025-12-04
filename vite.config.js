@@ -10,4 +10,15 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+
+    // server: {
+    //     host: '0.0.0.0',   // force IPv4 only
+    //     port: 5173,
+    //     strictPort: true,
+    //     hmr: {
+    //         host: 'task_manager.test', // Herd domain
+    //         protocol: 'ws',
+    //         port: 5173,
+    //     },
+    // },
 });
