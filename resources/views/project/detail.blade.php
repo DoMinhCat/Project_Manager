@@ -23,7 +23,17 @@
                         <h1 class="text-3xl font-bold text-gray-900">
                             {{ $project->name }}
                         </h1>
-                        <p class="mt-1 text-sm text-gray-600">
+
+                        @if ($project->due_at)
+                            <div class="mt-1 flex items-center text-sm text-gray-700">
+                                <flux:icon.calendar class="w-4 h-4 mr-1.5 text-gray-400" />
+                                {{ $project->due_at->format('d/m/Y') }}
+                            </div>
+                        @else
+                            <span class="text-sm text-gray-400">No deadline</span>
+                        @endif
+
+                        <p class="mt-2 text-sm text-gray-600">
                             {{ $project->description ? $project->description : ""}}
                         </p>
                     </div>
@@ -97,13 +107,9 @@
 
                                             {{-- Deadline --}}
                                             <td class="px-6 py-4 text-center text-gray-600">
-                                                @if($task->due_at)
-                                                    <div class="flex items-center text-sm">
-                                                        <svg class="w-4 h-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor"
-                                                            viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                        </svg>
+                                                @if ($task->due_at)
+                                                    <div class="flex items-center text-sm text-gray-700">
+                                                        <flux:icon.calendar class="w-4 h-4 mr-1.5 text-gray-400" />
                                                         {{ $task->due_at->format('d/m/Y') }}
                                                     </div>
                                                 @else

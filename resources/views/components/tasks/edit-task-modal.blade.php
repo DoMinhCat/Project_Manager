@@ -16,10 +16,12 @@
             @csrf
             @method('PATCH')
             <flux:input class="txt-box" label="Name" name="name" value="{{ $task->name }}" />
-            <flux:textarea class="txt-box" label="Description" name="description" value="{{ $task->description }}" />
+            <flux:textarea class="txt-box" rows="auto" label="Description" name="description"
+                id="task-desc-{{ $task->id }}" :value="old('description', $task->description)" />
 
             <flux:input class="txt-box" label="Due date" name="due_at" type="date"
-                placeholder="Choose the due date of the task" value="{{ old('due_at') }}" />
+                placeholder="Choose the due date of the task"
+                value="{{ old('due_at', optional($task->due_at)->format('Y-m-d')) }}" />
 
             <flux:select label="Priority" name="priority" class="max-w-fit">
                 <flux:select.option value="low" :selected="$task->priority === 'low'">Low
@@ -36,3 +38,13 @@
         </form>
     </div>
 </flux:modal>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const taskId = @json($task->id);
+        const textarea = document.getElementById(`task-desc-${taskId}`);
+        if (textarea && !textarea.value.trim()) {
+            textarea.value = @json(old('description', $task->description));
+        }
+    });
+</script>
