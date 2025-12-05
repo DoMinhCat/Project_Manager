@@ -30,7 +30,7 @@
                 </flux:select>
 
                 <button type="submit" class="btn-blue inline-block">
-                    Save
+                    Save changes
                 </button>
             </form>
         </div>

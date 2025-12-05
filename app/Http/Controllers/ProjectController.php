@@ -31,7 +31,7 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'name'        => 'required|min:3|max:30',
-            'description' => 'nullable|max:511',
+            'description' => 'nullable|max:255',
             'due_at'      => 'nullable|date|not_before_today',
         ]);
 
@@ -58,7 +58,7 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Project $project)
+    public function edit(Request $request, Project $project)
     {
         //
     }
@@ -68,7 +68,16 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        $validated = $request->validate([
+            'name'        => 'required|min:3|max:30',
+            'description' => 'nullable|max:255',
+            'due_at'      => 'nullable|date|not_before_today',
+        ]);
+
+        $project->update($validated);
+        return redirect()
+            ->route('project.detail', $project)
+            ->with('success', $validated['name'] . ' has been successfully updated.');
     }
 
     /**

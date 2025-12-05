@@ -19,9 +19,14 @@
 
                 {{-- Header --}}
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-5 mb-8 gap-4">
-                    <h1 class="text-3xl font-bold text-gray-900">
-                        {{ $project->name }}
-                    </h1>
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">
+                            {{ $project->name }}
+                        </h1>
+                        <p class="mt-1 text-sm text-gray-600">
+                            {{ $project->description ? $project->description : ""}}
+                        </p>
+                    </div>
 
                     @if($tasks->count() > 0)
                         <div>
@@ -85,7 +90,7 @@
                                             {{-- Priority --}}
                                             <td class="px-6 py-4 text-center">
                                                 <span
-                                                    class="font-semibold  @if($task->priority === 3) text-red-500 @elseif($task->priority === 2) text-yellow-500 @else text-green-500 @endif">
+                                                    class="font-semibold  @if($task->priority === 'high') text-red-500 @elseif($task->priority === 'medium') text-yellow-500 @else text-green-500 @endif">
                                                     {{ ucfirst($task->priority) }}
                                                 </span>
                                             </td>

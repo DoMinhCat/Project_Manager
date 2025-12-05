@@ -2,7 +2,7 @@
 
 <flux:modal.trigger name="edit-{{ $task->id }}">
     <flux:button size="sm" variant="primary" color="yellow">
-        <flux:icon.pencil />
+        <flux:icon.pencil-square />
     </flux:button>
 </flux:modal.trigger>
 

@@ -71,7 +71,17 @@ class TaskController extends Controller
      */
     public function update(Request $request, Project $project, Task $task)
     {
-        //
+        $validated = $request->validate([
+            'name'        => 'required|min:3|max:255',
+            'description' => 'nullable|max:1023',
+            'priority' => 'required',
+            'due_at'      => 'nullable|date|not_before_today',
+        ]);
+
+        $task->update($validated);
+        return redirect()
+            ->route('project.detail', $project)
+            ->with('success', $validated['name'] . ' has been successfully updated.');
     }
 
     /**
