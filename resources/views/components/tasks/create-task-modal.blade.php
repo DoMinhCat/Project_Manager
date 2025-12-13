@@ -20,7 +20,7 @@
         <form action="{{ route('task.create', $project) }}" method="POST" class="space-y-5">
             @csrf
 
-            <flux:input class="txt-box" label="Name" name="name" placeholder="Give your task a name"
+            <flux:input class="txt-box" label="Name" name="name" required placeholder="Give your task a name"
                 value="{{ old('name') }}" />
 
             <flux:textarea class="txt-box" label="Description" name="description" placeholder="Easy peasy task"
@@ -29,7 +29,7 @@
             <flux:input class="txt-box" label="Due date" name="due_at" type="date"
                 placeholder="Choose the due date of the task" value="{{ old('due_at') }}" />
 
-            <flux:select label="Priority" name="priority" class="max-w-fit" placeholder="Choose a priority">
+            <flux:select label="Priority" name="priority" class="max-w-fit" placeholder="Choose a priority" required>
                 <flux:select.option value="low">Low</flux:select.option>
                 <flux:select.option value="medium">Medium</flux:select.option>
                 <flux:select.option value="high">High</flux:select.option>

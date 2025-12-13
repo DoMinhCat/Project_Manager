@@ -73,6 +73,7 @@ class ProjectController extends Controller
             'name'        => 'required|min:3|max:30',
             'description' => 'nullable|max:255',
             'due_at'      => 'nullable|date|not_before_today',
+            'priority'    => 'required',
         ]);
 
         $project->update($validated);

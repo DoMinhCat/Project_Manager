@@ -99,10 +99,14 @@
 
                                             {{-- Task --}}
                                             <td class="px-6 py-4">
-                                                <a href="{{ route('task.detail', [$project->id, $task->id]) }}"
-                                                    class="font-semibold text-gray-900 hover:text-blue-600 transition">
-                                                    {{ $task->name }}
-                                                </a>
+                                                <flux:modal.trigger name="edit-task-{{ $task->id }}">
+                                                    <a href="#" class="flex items-center group">
+                                                        <span
+                                                            class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                                                            {{ $task->name }}
+                                                        </span>
+                                                    </a>
+                                                </flux:modal.trigger>
                                             </td>
 
                                             {{-- Status --}}

@@ -1,12 +1,12 @@
 @props(['task'])
 
-<flux:modal.trigger name="edit-{{ $task->id }}">
+<flux:modal.trigger name="edit-task-{{ $task->id }}">
     <flux:button size="sm" variant="primary" color="yellow">
         <flux:icon.pencil-square />
     </flux:button>
 </flux:modal.trigger>
 
-<flux:modal name="edit-{{ $task->id }}" flyout variant="floating">
+<flux:modal name="edit-task-{{ $task->id }}" flyout variant="floating">
     <div class="space-y-6 text-left">
         <div>
             <flux:heading size="lg">Update {{ $task->name }}</flux:heading>
@@ -15,7 +15,7 @@
         <form action="{{ route('task.update', [$task->project, $task]) }}" method="POST" class="space-y-5">
             @csrf
             @method('PATCH')
-            <flux:input class="txt-box" label="Name" name="name" value="{{ $task->name }}" />
+            <flux:input class="txt-box" label="Name" required name="name" value="{{ $task->name }}" />
             <flux:textarea class="txt-box" rows="auto" label="Description" name="description"
                 id="task-desc-{{ $task->id }}" :value="old('description', $task->description)" />
 
@@ -23,7 +23,7 @@
                 placeholder="Choose the due date of the task"
                 value="{{ old('due_at', optional($task->due_at)->format('Y-m-d')) }}" />
 
-            <flux:select label="Priority" name="priority" class="max-w-fit">
+            <flux:select label="Priority" name="priority" class="max-w-fit" required>
                 <flux:select.option value="low" :selected="$task->priority === 'low'">Low
                 </flux:select.option>
                 <flux:select.option value="medium" :selected="$task->priority === 'medium'">Medium

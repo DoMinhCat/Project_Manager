@@ -72,7 +72,6 @@
                                             <td class="px-6 py-4">
                                                 <a href="{{ route('project.detail', $project->id) }}"
                                                     class="flex items-center group">
-
                                                     <span
                                                         class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
                                                         {{ $project->name }}
