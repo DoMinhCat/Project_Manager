@@ -1,9 +1,9 @@
 @props(['project'])
 
 <flux:modal.trigger name="{{ $project->id }}">
-    <flux:button size="sm" variant="danger">
-        <flux:icon.trash />
-    </flux:button>
+    <flux:tooltip content="Delete">
+        <flux:button size="sm" variant="danger" icon="trash" />
+    </flux:tooltip>
 </flux:modal.trigger>
 
 <flux:modal :dismissible="false" name="{{ $project->id }}" class="min-w-88">

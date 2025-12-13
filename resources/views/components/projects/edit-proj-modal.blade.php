@@ -1,9 +1,9 @@
 @props(['project'])
 
 <flux:modal.trigger name="edit-proj-{{ $project->id }}">
-    <flux:button size="sm" variant="primary" color="yellow">
-        <flux:icon.pencil-square />
-    </flux:button>
+    <flux:tooltip content="Edit">
+        <flux:button size="sm" variant="primary" icon="pencil-square" color="yellow" />
+    </flux:tooltip>
 </flux:modal.trigger>
 
 <flux:modal name="edit-proj-{{ $project->id }}" flyout variant="floating">
@@ -40,6 +40,15 @@
                     <flux:select.option value="completed" :selected="$project->status === 'completed'">Completed
                     </flux:select.option>
                 </flux:select>
+            </div>
+            <input type="hidden" name="auto_status" value="0">
+
+            <div class="flex flex-row gap-2">
+                <flux:checkbox label="Enable auto status" value="1" name="auto_status"
+                    :checked="$project->auto_status===1" />
+                <flux:tooltip content="Project status will be automatically set based on tasks status">
+                    <flux:icon.information-circle icon:variant="mini" />
+                </flux:tooltip>
             </div>
 
             <button type="submit" class="btn-blue">

@@ -1,20 +1,7 @@
 <x-layout>
     {{-- ERROR/SUCCESS MSG --}}
-    @if(session('success'))
-        <div class="w-full max-w-3xl mx-auto mt-4 p-6">
-            <div x-data="{ visible: true }" x-show="visible" x-collapse>
-                <div x-show="visible" x-transition>
-                    <flux:callout icon="check" color="green">
-                        <flux:callout.heading>{{ session('success') }}</flux:callout.heading>
-
-                        <x-slot name="controls">
-                            <flux:button icon="x-mark" variant="ghost" x-on:click="visible = false" />
-                        </x-slot>
-                    </flux:callout>
-                </div>
-            </div>
-        </div>
-    @endif
+    <x-response.success></x-response.success>
+    <x-response.error></x-response.error>
 
     <!-- HERO SECTION -->
     <section class="container1 text-center">

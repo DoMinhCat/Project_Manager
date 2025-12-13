@@ -1,9 +1,9 @@
 @props(['task'])
 
 <flux:modal.trigger name="edit-task-{{ $task->id }}">
-    <flux:button size="sm" variant="primary" color="yellow">
-        <flux:icon.pencil-square />
-    </flux:button>
+    <flux:tooltip content="Edit">
+        <flux:button size="sm" variant="primary" icon="pencil-square" color="yellow" />
+    </flux:tooltip>
 </flux:modal.trigger>
 
 <flux:modal name="edit-task-{{ $task->id }}" flyout variant="floating">

@@ -80,12 +80,24 @@
                                             </td>
                                             <td class="px-6 py-4 text-center">
                                                 <span
-                                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium @if($project->status === 'completed') bg-green-100 text-green-700 @elseif($project->status === 'in_progress')  bg-blue-100 text-blue-700 @else bg-yellow-100  text-yellow-700 @endif">
+                                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium @if($project->status === 'completed') bg-green-100 text-green-700 @elseif($project->status === 'in_progress') bg-blue-100 text-blue-700 @else bg-yellow-100 text-yellow-700 @endif">
                                                     <span
-                                                        class="w-1.5 h-1.5 rounded-full mr-1.5 @if($project->status === 'completed') bg-green-500 @elseif($project->status === 'in_progress') bg-blue-500 @else bg-yellow-500 @endif">
-                                                    </span>
+                                                        class="w-1.5 h-1.5 rounded-full mr-2 @if($project->status === 'completed') bg-green-500 @elseif($project->status === 'in_progress') bg-blue-500 @else bg-yellow-500 @endif"></span>
                                                     {{ ucfirst(str_replace('_', ' ', $project->status)) }}
+                                                    @if($project->auto_status === 1)
+                                                        <flux:tooltip content="Auto status">
+                                                            <flux:icon.cog-6-tooth variant="mini" class="size-4 ml-2" />
+                                                        </flux:tooltip>
+                                                    @else
+                                                        <flux:tooltip content="Manual status">
+                                                            <flux:icon.wrench variant="mini" class="size-4 ml-2" />
+                                                        </flux:tooltip>
+                                                    @endif
                                                 </span>
+
+
+
+
                                             </td>
                                             <td class="px-6 py-4 text-center">
                                                 <span

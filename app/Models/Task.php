@@ -26,7 +26,6 @@ class Task extends Model
 
     // optional: cast done to boolean and due_at to datetime
     protected $casts = [
-        'done' => 'boolean',
         'due_at' => 'datetime',
     ];
 }

@@ -1,9 +1,9 @@
 @props(['task'])
 
 <flux:modal.trigger name="delete-{{ $task->id }}">
-    <flux:button size="sm" variant="danger">
-        <flux:icon.trash />
-    </flux:button>
+    <flux:tooltip content="Delete">
+        <flux:button size="sm" variant="danger" icon="trash" />
+    </flux:tooltip>
 </flux:modal.trigger>
 
 <flux:modal :dismissible="false" name="delete-{{ $task->id }}" class="min-w-88">
