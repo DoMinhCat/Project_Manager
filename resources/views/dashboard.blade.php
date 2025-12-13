@@ -49,30 +49,36 @@
                 <div class="border p-2 mb-2 rounded">
                     <h3 class="font-bold">{{ $project->name }} ({{ $project->status }})</h3>
                     <p>Total tasks: {{ $project->tasks->count() }}</p>
+                    <p>priority: {{ $project->priority}}</p>
+                    <p>due date: {{ $project->due_at->format('d/m/Y')}}</p>
                     <p>Completed tasks: {{ $project->tasks->where('done', true)->count() }}</p>
                 </div>
             @endforeach
         </div>
 
-        <div x-data="{ open: false }" class="relative">
+        <div x-data="{ open: false }" class="bg-white p-4">
             <button
                 @click="open = !open"
-                class="border rounded px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200"
+                class="w-full flex items-center gap-2 rounded-lg border bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
             >
-                Sort by ▾
+                Sort by
+                <span>▾</span>
             </button>
 
             <div
                 x-show="open"
                 @click.outside="open = false"
                 x-transition
-                class="absolute right-0 mt-2 w-48 bg-white border rounded shadow z-10"
+                class="bg-gray-50 p-4 rounded-lg border shadow-lg"
             >
-                <a href="?sort=priority" class="block px-4 py-2 hover:bg-gray-100">
+                <a href="{{ request()->fullUrlWithQuery(['sort' => 'none']) }}" class="block px-4 py-2 font-medium hover:bg-gray-100">
+                    None
+                </a>
+                <a href="{{ request()->fullUrlWithQuery(['sort' => 'priority']) }}" class="block px-4 py-2 font-medium hover:bg-gray-100">
                     Priority
                 </a>
 
-                <a href="?sort=due_at" class="block px-4 py-2 hover:bg-gray-100">
+                <a href="{{ request()->fullUrlWithQuery(['sort' => 'due_at']) }}" class="block px-4 py-2 font-medium hover:bg-gray-100">
                     Due date 
                 </a>
             </div>
