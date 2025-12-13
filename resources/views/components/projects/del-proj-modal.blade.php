@@ -15,8 +15,7 @@
                 This action cannot be reversed.
             </flux:text>
         </div>
-        <div class="flex gap-2">
-            <flux:spacer />
+        <div class="flex gap-2 items-center justify-center">
             <flux:modal.close>
                 <flux:button variant="ghost">Cancel</flux:button>
             </flux:modal.close>

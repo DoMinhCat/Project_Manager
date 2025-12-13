@@ -18,7 +18,6 @@ Route::get('/about', function () {
 
 
 // DASHBOARD
-
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // USER
@@ -32,6 +31,7 @@ Route::post('/resgister/submit', [UserController::class, 'store'])->name('regist
 Route::post('/login/submit', [UserController::class, 'login'])->name('login.submit');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::get('/user/{user}', [UserController::class, 'show'])->name('account');
+Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('account.delete');
 
 // PROJECT
 Route::get('/projects', [ProjectController::class, 'index'])->name('project.all');
