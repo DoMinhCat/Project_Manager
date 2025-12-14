@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-     public function index()
+     public function index(Request $request)
     {
         
+        $sort = $request->query('sort');
+
         $tasksByStatus = Task::all()->groupBy(function($task) {
             if ($task->done) return 'completed';
             if ($task->due_at && $task->due_at < now()) return 'overdue';
@@ -23,8 +25,30 @@ class DashboardController extends Controller
 
         $recentTasks = Task::where('created_at', '>=', now()->subDays(7))->count();
         
-        $projects = Project::with('tasks')->get();
+        $projects = Project::with('tasks');
 
-        return view('dashboard', compact('tasksByStatus', 'overdueTasks', 'recentTasks', 'projects'));
+        if ($sort === 'priority') {
+            $projects->orderByRaw("
+                CASE priority
+                    WHEN 'high' THEN 1
+                    WHEN 'medium' THEN 2
+                    WHEN 'low' THEN 3
+                END
+            ");
+        } 
+        elseif ($sort === 'due_at') {
+            $projects->orderBy('due_at', 'desc');
+        } 
+        elseif ($sort === 'none') { 
+            $projects->orderBy('id');
+        }
+        else
+        {
+            $sort === 'none';
+        }
+
+        $projects = $projects->get();
+
+        return view('dashboard', compact('tasksByStatus', 'overdueTasks', 'recentTasks', 'projects','sort'));
     }
 }
