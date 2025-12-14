@@ -54,7 +54,7 @@
                     </div>
 
 
-                    @if($tasks->count() > 0)
+                    @if($tasks->count() > 0 && ($project->userPermission(Auth::user()) == 'owner' || $project->userPermission(Auth::user()) == 'edit'))
                         <div>
                             <x-tasks.create-task-modal :project="$project"></x-tasks.create-task-modal>
                         </div>
@@ -111,18 +111,24 @@
 
                                             {{-- Status --}}
                                             <td class="px-6 py-4 text-center">
-                                                <form action="{{ route('task.updateStatus', [$project, $task]) }}" method="POST">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <input type="hidden" name="status"
-                                                        value="@if($task->status === 1) 0 @else 1 @endif">
+                                                @if($project->userPermission(Auth::user()) != 'view')
+                                                    <form action="{{ route('task.updateStatus', [$project, $task]) }}" method="POST">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <input type="hidden" name="status"
+                                                            value="@if($task->status === 1) 0 @else 1 @endif">
 
-                                                    <button type="submit"><span
-                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium @if($task->status === 1) bg-green-100 text-green-700 hover:bg-gray-100 hover:text-gray-700 @else bg-gray-100 text-gray-700 hover:bg-green-100 hover:text-green-700  @endif">
-                                                            <flux:icon.check-circle />
-                                                        </span>
-                                                    </button>
-                                                </form>
+                                                        <button type="submit"><span
+                                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium @if($task->status === 1) bg-green-100 text-green-700 hover:bg-gray-100 hover:text-gray-700 @else bg-gray-100 text-gray-700 hover:bg-green-100 hover:text-green-700  @endif">
+                                                                <flux:icon.check-circle />
+                                                            </span>
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium @if($task->status === 1) bg-green-100 text-green-700 @else bg-gray-100 text-gray-700 @endif">
+                                                        <flux:icon.check-circle />
+                                                    </span>
+                                                @endif
                                             </td>
 
                                             {{-- Priority --}}
@@ -148,12 +154,18 @@
                                             {{-- Action --}}
                                             <td class="px-6 py-4 text-center">
                                                 <div class="flex items-center gap-1">
-                                                    {{-- Edit --}}
-                                                    <x-tasks.edit-task-modal :task="$task"></x-tasks.edit-task-modal>
-
-                                                    {{-- Delete --}}
-                                                    <x-tasks.del-task-modal :task="$task"></x-tasks.del-task-modal>
+                                                    @if($project->userPermission(Auth::user()) == 'owner' || $project->userPermission(Auth::user()) == 'edit')
+                                                        {{-- Edit --}}
+                                                        <x-tasks.edit-task-modal :task="$task"></x-tasks.edit-task-modal>
+                                                        {{-- Delete --}}
+                                                        @if($project->userPermission(Auth::user()) == 'owner')
+                                                            <x-tasks.del-task-modal :task="$task"></x-tasks.del-task-modal>
+                                                        @endif
+                                                    @else
+                                                        <span class="text-sm text-gray-400">No action available</span>
+                                                    @endif
                                                 </div>
+
                                             </td>
                                         </tr>
                                     @endforeach
@@ -173,17 +185,21 @@
                 @endif
             </div>
 
-            <div class="m-6">
-                <flux:separator />
-            </div>
+            @if($project->userPermission(Auth::user()) == 'owner' || $project->userPermission(Auth::user()) == 'edit')
+                <div class="m-6">
+                    <flux:separator />
+                </div>
 
-            {{-- Danger zone --}}
-            <div class="max-w-7xl mx-auto text-center gap-3">
-                <x-projects.edit-proj-modal :project="$project"></x-projects.edit-proj-modal>
+                {{-- Project edit zone --}}
+                <div class="max-w-7xl mx-auto text-center gap-3">
+                    <x-projects.edit-proj-modal :project="$project"></x-projects.edit-proj-modal>
 
-                {{-- Delete --}}
-                <x-projects.del-proj-modal :project="$project"></x-projects.del-proj-modal>
-            </div>
+                    {{-- Delete --}}
+                    @if($project->userPermission(Auth::user()) == 'owner')
+                        <x-projects.del-proj-modal :project="$project"></x-projects.del-proj-modal>
+                    @endif
+                </div>
+            @endif
         </div>
     @endauth
 </x-layout>

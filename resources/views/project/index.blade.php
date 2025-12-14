@@ -62,7 +62,7 @@
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                            Actions
+                                            Action
                                         </th>
                                     </tr>
                                 </thead>
@@ -131,13 +131,21 @@
 
                                             {{-- Action --}}
                                             <td class="px-6 py-4 text-center">
-                                                {{-- Edit --}}
-                                                <x-projects.edit-proj-modal :project="$project"></x-projects.edit-proj-modal>
-                                                {{-- Share --}}
-                                                <x-projects.share-proj-modal :project="$project"
-                                                    :users="$project->notSharedUsers()"></x-projects.share-proj-modal>
-                                                {{-- Delete --}}
-                                                <x-projects.del-proj-modal :project="$project"></x-projects.del-proj-modal>
+                                                @if($project->userPermission(Auth::user()) == 'view' || $project->userPermission(Auth::user()) == 'collaborate')
+                                                    <span class="text-sm text-gray-400">No action available</span>
+                                                @else
+                                                    {{-- Edit --}}
+                                                    @if($project->userPermission(Auth::user()) == 'owner' || $project->userPermission(Auth::user()) == 'edit')
+                                                        <x-projects.edit-proj-modal :project="$project"></x-projects.edit-proj-modal>
+                                                        {{-- Share --}}
+                                                        <x-projects.share-proj-modal :project="$project"
+                                                            :users="$project->notSharedUsers()"></x-projects.share-proj-modal>
+                                                    @endif
+                                                    @if($project->userPermission(Auth::user()) == 'owner')
+                                                        {{-- Delete --}}
+                                                        <x-projects.del-proj-modal :project="$project"></x-projects.del-proj-modal>
+                                                    @endif
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
