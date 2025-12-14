@@ -37,12 +37,18 @@ class TaskController extends Controller
         ],
         [
         'due_at.not_before_today' => 'The due date cannot be in the past.',
-    ]);
+        ]);
         $validated['project_id'] = $project->id;
-        // Create project
-        Task::create($validated);
 
-        return redirect()->back()->with('success', $validated['name'] . ' has been successfully created.');
+        Task::create($validated);
+        $messages = [];
+        $messages[] = $validated['name'] . ' has been successfully created.';
+
+        if($project->autoUpdateStatus()){
+            $current_status = ucfirst(str_replace('_', ' ', $project->status));
+            $messages[] = 'Project status was automatically updated to ' . $current_status . '.';
+        }
+        return redirect()->back()->with('success', $messages);
     }
 
     /**
@@ -50,10 +56,7 @@ class TaskController extends Controller
      */
     public function show(Project $project, Task $task)
     {
-        return view('task.detail', [
-            'task' => $task,
-            'project' => $project
-        ]);
+        //
     }
 
     /**
@@ -61,10 +64,7 @@ class TaskController extends Controller
      */
     public function edit(Project $project, Task $task)
     {
-        return view('task.edit', [
-            'task' => $task,
-            'project' => $project
-        ]);
+        //
     }
 
     /**
@@ -82,7 +82,13 @@ class TaskController extends Controller
         'due_at.not_before_today' => 'The due date cannot be in the past.',
     ]);
         $task->update($validated);
-        return redirect()->back()->with('success', $validated['name'] . ' has been successfully updated.');
+        $messages = [];
+        $messages[] = $validated['name'] . ' has been successfully updated.';
+        if($project->autoUpdateStatus()){
+            $current_status = ucfirst(str_replace('_', ' ', $project->status));
+            $messages[] = 'Project status was automatically updated to ' . $current_status . '.';
+        }
+        return redirect()->back()->with('success', $messages);
     }
 
     /**
@@ -91,17 +97,27 @@ class TaskController extends Controller
     public function destroy(Project $project, Task $task)
     {
         $task->delete();
-        return redirect()->back()->with('success', $task->name . ' has been deleted.' );
+        $messages = [];
+        $messages[] = $task->name . ' has been deleted.';
+        if($project->autoUpdateStatus()){
+            $current_status = ucfirst(str_replace('_', ' ', $project->status));
+            $messages[] = 'Project status was automatically updated to ' . $current_status . '.';
+        }
+        return redirect()->back()->with('success', $messages);
     }
 
-    public function updateStatus(Request $request, Task $task)
+    public function updateStatus(Request $request, Project $project, Task $task)
     {
         $validated = $request->validate([
             'status'        => 'required',
         ]);
 
         $task->update($validated);
-
-        return redirect()->back();
+        $messages = [];
+        if($project->autoUpdateStatus()){
+            $current_status = ucfirst(str_replace('_', ' ', $project->status));
+            $messages[] = 'Project status was automatically updated to ' . $current_status . '.';
+        }
+        return redirect()->back()->with('success', $messages);
     }
 }

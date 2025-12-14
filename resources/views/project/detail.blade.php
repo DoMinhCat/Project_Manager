@@ -111,7 +111,7 @@
 
                                             {{-- Status --}}
                                             <td class="px-6 py-4 text-center">
-                                                <form action="{{ route('task.updateStatus', $task) }}" method="POST">
+                                                <form action="{{ route('task.updateStatus', [$project, $task]) }}" method="POST">
                                                     @csrf
                                                     @method('PATCH')
                                                     <input type="hidden" name="status"

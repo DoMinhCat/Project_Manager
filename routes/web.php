@@ -46,5 +46,5 @@ Route::post('/projects/{project}/tasks/create', [TaskController::class, 'store']
 Route::get('/projects/{project}/tasks/{task}', [TaskController::class, 'show'])->name('task.detail');
 Route::delete('/projects/{project}/tasks/{task}', [TaskController::class, 'destroy'])->name('task.delete');
 Route::patch('/projects/{project}/tasks/{task}', [TaskController::class, 'update'])->name('task.update');
-Route::patch('/tasks/{task}/status', [TaskController::class, 'updateStatus'])->name('task.updateStatus');
+Route::patch('/projects/{project}/tasks/{task}/status', [TaskController::class, 'updateStatus'])->name('task.updateStatus');
 

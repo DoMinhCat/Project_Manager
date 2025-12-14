@@ -42,7 +42,7 @@ class ProjectController extends Controller
         // Create project
         Project::create($validated);
 
-        return redirect()->back()->with('success', $validated['name'] . ' has been successfully created.');
+        return redirect()->back()->with('success', [$validated['name'] . ' has been successfully created.']);
     }
 
     /**
@@ -82,7 +82,13 @@ class ProjectController extends Controller
     ]);
 
         $project->update($validated);
-        return redirect()->back()->with('success', $validated['name'] . ' has been successfully updated.');
+        $messages = [];
+        $messages[] = $validated['name'] . ' has been successfully updated.';
+        if($project->autoUpdateStatus()){
+            $current_status = ucfirst(str_replace('_', ' ', $project->status));
+            $messages[] = 'Project status was automatically updated to ' . $current_status . '.';
+        }
+        return redirect()->back()->with('success', $messages);
     }
 
     /**
@@ -91,6 +97,6 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
-        return redirect()->back()->with('success', $project->name . ' has been deleted.' );
+        return redirect()->back()->with('success', [$project->name . ' has been deleted.']);
     }
 }
