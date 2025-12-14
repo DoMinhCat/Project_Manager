@@ -50,7 +50,7 @@
                     <h3 class="font-bold">{{ $project->name }} ({{ $project->status }})</h3>
                     <p>Total tasks: {{ $project->tasks->count() }}</p>
                     <p class="flex items-center gap-1">
-                        <span class="text-gray-700">Priority:</span>
+                        <span>Priority:</span>
 
                         <span class="
                             {{ $project->priority === 'high' ? 'text-red-600 font-bold' : '' }}
@@ -59,6 +59,10 @@
                         ">
                             {{ ucfirst($project->priority) }}
                         </span>
+                    </p>
+
+                    <p><span>Due date:</span>
+                        <span class="text-blue-400"> {{ $project->due_at->format('d/m/Y') }}</span>
                     </p>
                     
                     <p>Completed tasks: {{ $project->tasks->where('done', true)->count() }}</p>
@@ -81,14 +85,14 @@
                 x-transition
                 class="bg-gray-50 p-4 rounded-lg border shadow-lg"
             >
-                <a href="{{ request()->fullUrlWithQuery(['sort' => 'none']) }}" class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $sort === 'none' || !$sort ? 'font-bold text-blue-600' : '' }}" >
+                <a href="{{ request()->fullUrlWithQuery(['sort' => 'none']) }}" class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $sort === 'none' || !$sort ? 'font-bold text-blue-600' : 'font-medium' }}" >
                     None
                 </a>
-                <a href="{{ request()->fullUrlWithQuery(['sort' => 'priority']) }}" class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $sort === 'priority' || !$sort ? 'font-bold text-blue-600' : '' }}" >
+                <a href="{{ request()->fullUrlWithQuery(['sort' => 'priority']) }}" class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $sort === 'priority' ? 'font-bold text-blue-600' : 'font-medium' }}" >
                     Priority
                 </a>
 
-                <a href="{{ request()->fullUrlWithQuery(['sort' => 'due_at']) }}" class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $sort === 'due_at' || !$sort ? 'font-bold text-blue-600' : '' }}">
+                <a href="{{ request()->fullUrlWithQuery(['sort' => 'due_at']) }}" class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $sort === 'due_at' ? 'font-bold text-blue-600' : 'font-medium' }}">
                     Due date 
                 </a>
             </div>
