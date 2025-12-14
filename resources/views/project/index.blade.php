@@ -135,12 +135,13 @@
                                                     <span class="text-sm text-gray-400">No action available</span>
                                                 @else
                                                     {{-- Edit --}}
-                                                    @if($project->userPermission(Auth::user()) == 'owner' || $project->userPermission(Auth::user()) == 'edit')
-                                                        <x-projects.edit-proj-modal :project="$project"></x-projects.edit-proj-modal>
-                                                        {{-- Share --}}
-                                                        <x-projects.share-proj-modal :project="$project"
-                                                            :users="$project->notSharedUsers()"></x-projects.share-proj-modal>
-                                                    @endif
+                                                    <x-projects.edit-proj-modal :project="$project"></x-projects.edit-proj-modal>
+                                                    {{-- Share --}}
+                                                    <x-projects.share-proj-modal :project="$project"
+                                                        :users="$project->notSharedUsers()"></x-projects.share-proj-modal>
+                                                    <x-projects.access-proj-modal :project="$project"
+                                                        :users="$project->sharedUsers()"></x-projects.access-proj-modal>
+
                                                     @if($project->userPermission(Auth::user()) == 'owner')
                                                         {{-- Delete --}}
                                                         <x-projects.del-proj-modal :project="$project"></x-projects.del-proj-modal>

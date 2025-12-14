@@ -118,11 +118,13 @@
                                                         <input type="hidden" name="status"
                                                             value="@if($task->status === 1) 0 @else 1 @endif">
 
-                                                        <button type="submit"><span
-                                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium @if($task->status === 1) bg-green-100 text-green-700 hover:bg-gray-100 hover:text-gray-700 @else bg-gray-100 text-gray-700 hover:bg-green-100 hover:text-green-700  @endif">
-                                                                <flux:icon.check-circle />
-                                                            </span>
-                                                        </button>
+                                                        <flux:tooltip content="Mark as done">
+                                                            <button type="submit"><span
+                                                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium @if($task->status === 1) bg-green-100 text-green-700 hover:bg-gray-100 hover:text-gray-700 @else bg-gray-100 text-gray-700 hover:bg-green-100 hover:text-green-700  @endif">
+                                                                    <flux:icon.check-circle />
+                                                                </span>
+                                                            </button>
+                                                        </flux:tooltip>
                                                     </form>
                                                 @else
                                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium @if($task->status === 1) bg-green-100 text-green-700 @else bg-gray-100 text-gray-700 @endif">
@@ -190,7 +192,8 @@
                 {{-- Project edit zone --}}
                 <div class="max-w-7xl mx-auto text-center gap-3">
                     <x-projects.edit-proj-modal :project="$project"></x-projects.edit-proj-modal>
-
+                    <x-projects.share-proj-modal :project="$project" :users="$project->notSharedUsers()"></x-projects.share-proj-modal>
+                    <x-projects.access-proj-modal :project="$project" :users="$project->sharedUsers()"></x-projects.access-proj-modal>
                     {{-- Delete --}}
                     @if($project->userPermission(Auth::user()) == 'owner')
                         <x-projects.del-proj-modal :project="$project"></x-projects.del-proj-modal>

@@ -37,7 +37,8 @@ Route::patch('/user/{user}', [UserController::class, 'updatePassword'])->name('a
 // PROJECT
 Route::get('/projects', [ProjectController::class, 'index'])->name('project.all');
 Route::post('/projects/create', [ProjectController::class, 'store'])->name('project.create');
-Route::post('/projects/{project}/share', [ProjectController::class, 'share'])->name('project.share');
+Route::post('/projects/{project}/access/share', [ProjectController::class, 'share'])->name('project.share');
+Route::patch('/projects/{project}/access/manage', [ProjectController::class, 'updateAccess'])->name('project.updateAccess');
 Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('project.detail');
 Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('project.delete');
 Route::patch('/projects/{project}', [ProjectController::class, 'update'])->name('project.update');

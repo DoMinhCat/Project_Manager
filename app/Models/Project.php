@@ -61,6 +61,11 @@ class Project extends Model
         return User::whereNotIn('id', $this->members->pluck('id'))->where('id', '!=', $this->owner_id)->get();
     }
 
+    public function sharedUsers()
+    {
+        return $this->members->where('id', '!=', $this->owner_id);
+    }
+
     // Relationship: One project -> many tasks
     public function tasks()
     {

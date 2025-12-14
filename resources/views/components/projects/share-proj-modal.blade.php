@@ -50,7 +50,6 @@
 
             <div class="flex gap-3 pt-2">
                 <flux:spacer />
-                <flux:button type="button" variant="ghost" flux:close>Cancel</flux:button>
                 <flux:button type="submit" variant="primary">Share project</flux:button>
             </div>
         </div>

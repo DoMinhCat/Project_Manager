@@ -130,4 +130,32 @@ class ProjectController extends Controller
         
         return back()->with('success', ['Project shared successfully']);
     }
+
+    public function updateAccess(Request $request, Project $project)
+    {
+        $validated = $request->validate([
+            'permissions' => 'required|array',
+            'permissions.*' => 'required|in:view,collaborate,edit',
+            'access' => 'sometimes|array',
+            'access.*' => 'in:1',
+        ]);
+        $access = $validated['access'] ?? [];
+
+        foreach ($validated['permissions'] as $userId => $permission) {
+            if ((int) $userId === $project->owner_id) {
+                continue;
+            }
+
+            if (!array_key_exists($userId, $access)) {
+                $project->members()->detach($userId);
+                continue;
+            }
+
+            $project->members()->updateExistingPivot(
+                $userId,
+                ['permission' => $permission]
+            );
+        }
+        return back()->with('success', ['Access updated successfully']);
+    }
 }
