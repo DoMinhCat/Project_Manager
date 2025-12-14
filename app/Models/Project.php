@@ -49,13 +49,16 @@ class Project extends Model
         return false;
     }
 
-    public function hasPermission(User $user): bool
+    public function userPermission(User $user): ?string
     {
-        if($this->owner_id != $user->id) {
-            return false;
-        }
+        return $this->members()
+            ->where('users.id', $user->id)
+            ->value('project_user.permission');
+    }
 
-        return true;
+    public function notSharedUsers()
+    {
+        return User::whereNotIn('id', $this->members->pluck('id'))->where('id', '!=', $this->owner_id)->get();
     }
 
     // Relationship: One project -> many tasks
@@ -66,7 +69,7 @@ class Project extends Model
 
     public function members()
     {
-        return $this->belongsToMany(User::class, 'project_user');
+        return $this->belongsToMany(User::class, 'project_user')->withPivot('permission')->withTimestamps();
     }
 
     public function owner()

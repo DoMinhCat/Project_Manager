@@ -30,8 +30,8 @@ class TaskController extends Controller
      */
     public function store(Request $request, Project $project)
     {
-        if($project->hasPermission(Auth::user()) == false){
-            return view('forbidden');
+        if($project->userPermission(Auth::user()) == null){
+            abort(403, 'You don\'t have the right permission to perform this action.');
         }
         
         $validated = $request->validate([
@@ -77,8 +77,8 @@ class TaskController extends Controller
      */
     public function update(Request $request, Project $project, Task $task)
     {
-        if($project->hasPermission(Auth::user()) == false){
-            return view('forbidden');
+        if($project->userPermission(Auth::user()) == null){
+            abort(403, 'You don\'t have the right permission to perform this action.');
         }
         $validated = $request->validate([
             'name'        => 'required|min:3|max:255',
@@ -104,8 +104,8 @@ class TaskController extends Controller
      */
     public function destroy(Project $project, Task $task)
     {
-        if($project->hasPermission(Auth::user()) == false){
-            return view('forbidden');
+        if($project->userPermission(Auth::user()) == null){
+            abort(403, 'You don\'t have the right permission to perform this action.');
         }
         $task->delete();
         $messages = [];
@@ -119,8 +119,8 @@ class TaskController extends Controller
 
     public function updateStatus(Request $request, Project $project, Task $task)
     {
-        if($project->hasPermission(Auth::user()) == false){
-            return view('forbidden');
+        if($project->userPermission(Auth::user()) == null){
+            abort(403, 'You don\'t have the right permission to perform this action.');
         }
 
         $validated = $request->validate([

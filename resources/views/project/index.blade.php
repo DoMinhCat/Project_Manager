@@ -134,7 +134,8 @@
                                                 {{-- Edit --}}
                                                 <x-projects.edit-proj-modal :project="$project"></x-projects.edit-proj-modal>
                                                 {{-- Share --}}
-                                                <x-projects.share-proj-modal :project="$project"></x-projects.share-proj-modal>
+                                                <x-projects.share-proj-modal :project="$project"
+                                                    :users="$project->notSharedUsers()"></x-projects.share-proj-modal>
                                                 {{-- Delete --}}
                                                 <x-projects.del-proj-modal :project="$project"></x-projects.del-proj-modal>
                                             </td>

@@ -1,4 +1,4 @@
-@props(['project', 'not_shared_users'])
+@props(['project', 'users'])
 
 <flux:modal.trigger name="share-project-{{ $project->id }}">
     <flux:tooltip content="Share">
@@ -18,14 +18,15 @@
             @csrf
 
             <div class="space-y-2 max-h-64 overflow-y-auto">
-                {{-- @foreach ($not_shared_users as $user) --}}
-                <flux:tooltip content="email here">
-                    <label class="flex items-center gap-2">
-                        <input type="checkbox" name="users[]" value="user_id" class="rounded border-zinc-300">
-                        <span>User name here</span>
-                    </label>
-                </flux:tooltip>
-                {{-- @endforeach --}}
+                @foreach ($users as $user)
+                    <flux:tooltip content="email here">
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" name="user-{{ $user->id }}" value="{{ $user->id }}"
+                                class="rounded border-zinc-300">
+                            <span>{{ $user->name }}</span>
+                        </label>
+                    </flux:tooltip>
+                @endforeach
             </div>
 
             <flux:select label="Permission" name="permission" class="max-w-fit" required>

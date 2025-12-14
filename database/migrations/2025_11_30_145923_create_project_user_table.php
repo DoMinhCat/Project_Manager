@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->enum('permission', ['view', 'collborate', 'edit'])->default('view'); 
+            $table->enum('permission', ['view', 'collborate', 'edit', 'owner'])->default('view'); 
             $table->timestamps();
         });
     }

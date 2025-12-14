@@ -26,10 +26,10 @@
             <form action="{{ route('login.submit') }}" method="POST" class="space-y-5">
                 @csrf
 
-                <flux:input class="txt-box" label="Email" type="email" name="email" placeholder="Enter your email"
+                <flux:input class="txt-box" label="Email" type="email" name="email" placeholder="Enter your email" required
                     value="{{ old('email') }}" />
 
-                <flux:input class="txt-box" label="Password" type="password" name="password"
+                <flux:input class="txt-box" label="Password" type="password" name="password" required
                     placeholder="Enter your password" />
 
                 <button type="submit" class="btn-blue inline-block">

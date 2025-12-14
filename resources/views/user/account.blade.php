@@ -20,24 +20,23 @@
                 </a>
             </div>
 
-            <flux:separator class="m-5" />
+            @if($user->id === Auth::user()->id)
+                <flux:separator class="m-5" />
 
-            <div class="text-center flex flex-row justify-center-safe gap-2">
-                <flux:modal.trigger name="change_password">
-                    <a href="#" class="inline-block btn-red">
-                        Change password
-                    </a>
-                </flux:modal.trigger>
+                <div class="text-center flex flex-row justify-center-safe gap-2">
+                    <flux:modal.trigger name="change_password">
+                        <a href="#" class="inline-block btn-red">
+                            Change password
+                        </a>
+                    </flux:modal.trigger>
 
-                <flux:modal.trigger name="delete_account">
-                    <a href="#" class="inline-block btn-red">
-                        Delete account
-                    </a>
-                </flux:modal.trigger>
-
-
-
-            </div>
+                    <flux:modal.trigger name="delete_account">
+                        <a href="#" class="inline-block btn-red">
+                            Delete account
+                        </a>
+                    </flux:modal.trigger>
+                </div>
+            @endif
         </div>
 
         <flux:modal :dismissible="false" name="delete_account" class="min-w-88 text-center">

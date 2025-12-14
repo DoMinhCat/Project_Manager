@@ -13,7 +13,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::with('tasks')->where('owner_id', '=', Auth::user()->id)->get(); 
+        $projects = Project::with(['tasks', 'members'])->where('owner_id', Auth::id())->get();
         return view('project.index', compact('projects'));
     }
 
@@ -40,9 +40,9 @@ class ProjectController extends Controller
     ]);
 
         $validated['owner_id'] = $request->user()->id;
-        // Create project
-        Project::create($validated);
+        $project = Project::create($validated);
 
+        $project->members()->attach($request->user()->id,['permission' => 'owner']);
         return redirect()->back()->with('success', [$validated['name'] . ' has been successfully created.']);
     }
 
@@ -51,8 +51,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        if($project->hasPermission(Auth::user()) == false){
-            return view('forbidden');
+        if($project->userPermission(Auth::user()) == null){
+            abort(403, 'You don\'t have the right permission to perform this action.');
         }
         return view('project.detail', [
             'project' => $project,
@@ -74,8 +74,8 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        if($project->hasPermission(Auth::user()) == false){
-            return view('forbidden');
+        if($project->userPermission(Auth::user()) == null){
+            abort(403, 'You don\'t have the right permission to perform this action.');
         }
 
         $validated = $request->validate([
@@ -105,8 +105,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        if($project->hasPermission(Auth::user()) == false){
-            return view('forbidden');
+        if($project->userPermission(Auth::user()) == null){
+            abort(403, 'You don\'t have the right permission to perform this action.');
         }
         $project->delete();
         return redirect()->back()->with('success', [$project->name . ' has been deleted.']);
