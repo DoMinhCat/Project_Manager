@@ -7,42 +7,52 @@
 </flux:modal.trigger>
 
 <flux:modal name="share-project-{{ $project->id }}" flyout position="bottom">
-    <div class="space-y-6 text-left">
-        <div>
-            <flux:heading size="lg">Share project</flux:heading>
-            <flux:text class="mt-2">Choose users you want to share <strong>{{ $project->name }}</strong> with
-            </flux:text>
-        </div>
+    <form method="POST" action="{{ route('project.share', $project) }}">
+        @csrf
 
-        <form method="POST" action="{{ route('home', $project) }}">
-            @csrf
+        <div class="space-y-6 text-left">
+            <div>
+                <flux:heading size="lg">Share project</flux:heading>
+                <flux:subheading class="mt-1">
+                    Choose users you want to share <strong>{{ $project->name }}</strong> with
+                </flux:subheading>
+            </div>
 
-            <div class="space-y-2 max-h-64 overflow-y-auto">
-                @foreach ($users as $user)
-                    <flux:tooltip content="email here">
-                        <label class="flex items-center gap-2">
-                            <input type="checkbox" name="user-{{ $user->id }}" value="{{ $user->id }}"
-                                class="rounded border-zinc-300">
-                            <span>{{ $user->name }}</span>
+            <div>
+                <flux:label class="mb-3">Select users</flux:label>
+                <div
+                    class="space-y-2 max-h-64 overflow-y-auto border border-zinc-200 dark:border-zinc-700 rounded-lg p-3">
+                    @forelse ($users as $user)
+                        <label
+                            class="flex items-center gap-3 p-2 rounded hover:bg-zinc-50 dark:hover:bg-zinc-800 cursor-pointer transition-colors">
+                            <input type="checkbox" name="users[]" value="{{ $user->id }}"
+                                class="rounded border-zinc-300 text-blue-600 focus:ring-2 focus:ring-blue-500">
+                            <div class="flex-1 min-w-0">
+                                <div class="font-medium text-sm">{{ $user->name }}</div>
+                                <div class="text-xs text-zinc-500 truncate">{{ $user->email }}</div>
+                            </div>
                         </label>
-                    </flux:tooltip>
-                @endforeach
+                    @empty
+                        <div class="text-center py-4 text-zinc-500 text-sm">
+                            No users available to share with
+                        </div>
+                    @endforelse
+                </div>
             </div>
 
-            <flux:select label="Permission" name="permission" class="max-w-fit" required>
-                <flux:select.option value="view" :selected="$project->priority === 'view'">View only
-                </flux:select.option>
-                <flux:select.option value="collaborate" :selected="$project->priority === 'collaborate'">Collaborate
-                </flux:select.option>
-                <flux:select.option value="edit" :selected="$project->priority === 'edit'">Edit
-                </flux:select.option>
-            </flux:select>
-            <div class="flex">
+            <div>
+                <flux:select label="Permission" name="permission" required>
+                    <flux:select.option value="view">View only</flux:select.option>
+                    <flux:select.option value="collaborate">Collaborate</flux:select.option>
+                    <flux:select.option value="edit">Edit</flux:select.option>
+                </flux:select>
+            </div>
+
+            <div class="flex gap-3 pt-2">
                 <flux:spacer />
-
-                <flux:button type="submit" variant="primary">Share</flux:button>
+                <flux:button type="button" variant="ghost" flux:close>Cancel</flux:button>
+                <flux:button type="submit" variant="primary">Share project</flux:button>
             </div>
-        </form>
-
-    </div>
+        </div>
+    </form>
 </flux:modal>

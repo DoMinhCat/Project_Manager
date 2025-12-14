@@ -105,10 +105,25 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        if($project->userPermission(Auth::user()) == null){
+        if($project->userPermission(Auth::user()) == null || $project->userPermission(Auth::user()) != 'owner'){
             abort(403, 'You don\'t have the right permission to perform this action.');
         }
         $project->delete();
         return redirect()->back()->with('success', [$project->name . ' has been deleted.']);
+    }
+
+    public function share(Request $request, Project $project)
+    {
+        $validated = $request->validate([
+            'users' => 'required|array',
+            'users.*' => 'exists:users,id',
+            'permission' => 'required|in:view,collaborate,edit'
+        ]);
+        
+        foreach ($validated['users'] as $userId) {
+            $project->members()->syncWithoutDetaching([$userId => ['permission' => $validated['permission']]]);
+        }
+        
+        return back()->with('success', ['Project shared successfully']);
     }
 }
