@@ -25,7 +25,7 @@
     <div class="w-full responsive grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
 
         <div class="bg-white p-4 rounded shadow">
-            <h2 class="font-semibold mb-2">Tasks by status (need to change, see the table 'tasks' in database)</h2>
+            <h2 class="font-semibold mb-2">Tasks by status</h2>
             <ul>
                 @foreach($tasksByStatus as $status => $count)
                     <li>{{ $status }} : {{ $count }}</li>
@@ -67,7 +67,7 @@
                         @endif
                     </p>
 
-                    <p>Completed tasks: {{ $project->tasks->where('done', true)->count() }}</p>
+                    <p>Completed tasks: {{ $project->tasks->where('status', true)->count() }}</p>
                 </div>
             @endforeach
         </div>
@@ -85,6 +85,10 @@
                     class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $sort === 'none' || !$sort ? 'font-bold text-blue-600' : 'font-medium' }}">
                     None
                 </a>
+                <a href="{{ request()->fullUrlWithQuery(['sort' => 'name']) }}"
+                    class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $sort === 'name' ? 'font-bold text-blue-600' : 'font-medium' }}">
+                    Name
+                </a>
                 <a href="{{ request()->fullUrlWithQuery(['sort' => 'priority']) }}"
                     class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $sort === 'priority' ? 'font-bold text-blue-600' : 'font-medium' }}">
                     Priority
@@ -93,6 +97,10 @@
                 <a href="{{ request()->fullUrlWithQuery(['sort' => 'due_at']) }}"
                     class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $sort === 'due_at' ? 'font-bold text-blue-600' : 'font-medium' }}">
                     Due date
+                </a>
+                <a href="{{ request()->fullUrlWithQuery(['sort' => 'number_of_tasks']) }}"
+                    class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $sort === 'number_of_tasks' ? 'font-bold text-blue-600' : 'font-medium' }}">
+                    Number of tasks
                 </a>
             </div>
         </div>
