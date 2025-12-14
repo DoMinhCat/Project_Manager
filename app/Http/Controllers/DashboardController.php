@@ -14,9 +14,9 @@ class DashboardController extends Controller
         $sort = $request->query('sort');
 
         $tasksByStatus = Task::all()->groupBy(function($task) {
-            if ($task->done) return 'completed';
-            if ($task->due_at && $task->due_at < now()) return 'overdue';
-            return 'in_progress';
+            if ($task->status) return 'Completed';
+            if ($task->due_at && $task->due_at < now()) return 'Overdue';
+            return 'In progress';
         })->map->count();
 
         $overdueTasks = Task::where('done', false)
@@ -42,6 +42,13 @@ class DashboardController extends Controller
         elseif ($sort === 'none') { 
             $projects->orderBy('id');
         }
+        elseif ($sort === 'name'){
+            $projects->orderBy('name');
+        }
+            elseif ($sort === 'number_of_tasks'){
+                $projects->withCount('tasks')
+                         ->orderBy('tasks_count', 'desc');
+            }
         else
         {
             $sort === 'none';
