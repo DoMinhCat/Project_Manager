@@ -74,7 +74,7 @@ class ProjectController extends Controller
             'description' => 'nullable|max:255',
             'due_at'      => 'nullable|date|not_before_today',
             'priority'    => 'required',
-            'status'      => 'required',
+            'status'      => 'sometimes',
             'auto_status' => 'sometimes|boolean',
         ],
         [

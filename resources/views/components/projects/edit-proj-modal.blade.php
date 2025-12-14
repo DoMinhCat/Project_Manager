@@ -32,7 +32,8 @@
                     <flux:select.option value="high" :selected="$project->priority === 'high'">High
                     </flux:select.option>
                 </flux:select>
-                <flux:select label="Status" name="status" class="max-w-fit" required>
+                <flux:select label="Status" name="status" class="max-w-fit" :disabled="$project->auto_status===1"
+                    required>
                     <flux:select.option value="on_hold" :selected="$project->status === 'on_hold'">On hold
                     </flux:select.option>
                     <flux:select.option value="in_progress" :selected="$project->status === 'in_progress'">In progress
