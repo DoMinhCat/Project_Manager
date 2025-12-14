@@ -133,7 +133,8 @@
                                             <td class="px-6 py-4 text-center">
                                                 {{-- Edit --}}
                                                 <x-projects.edit-proj-modal :project="$project"></x-projects.edit-proj-modal>
-
+                                                {{-- Share --}}
+                                                <x-projects.share-proj-modal :project="$project"></x-projects.share-proj-modal>
                                                 {{-- Delete --}}
                                                 <x-projects.del-proj-modal :project="$project"></x-projects.del-proj-modal>
                                             </td>
