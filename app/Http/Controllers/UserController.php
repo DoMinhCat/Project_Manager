@@ -38,7 +38,7 @@ class UserController extends Controller
         ]);
 
         User::create($validated);
-        return redirect('/')->with('success', 'Your account has been successfully created.');
+        return redirect('/')->with('success', ['Your account has been successfully created.']);
     }
 
     public function login(Request $request)
@@ -51,7 +51,7 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $name = Auth::user()->name;
-            return redirect('/dashboard')->with('success', "Welcome back, $name!");
+            return redirect('/dashboard')->with('success', ["Welcome back, $name!"]);
         }
 
         // if login fails:
@@ -66,7 +66,7 @@ class UserController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('success', 'You have been logged out.');
+        return redirect('/')->with('success', ['You have been logged out.']);
     }
 
     /**
@@ -103,7 +103,7 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         $user->delete();
-        return redirect()->route('home')->with('success', 'Account "'. $user->name . '" has been deleted.' );
+        return redirect()->route('home')->with('success', ['Account "'. $user->name . '" has been deleted.'] );
     }
 
     public function updatePassword(Request $request, User $user)
@@ -128,6 +128,6 @@ class UserController extends Controller
         'password' => Hash::make($request->password),
     ]);
 
-    return back()->with('success', 'Password has been changed.');
+    return back()->with('success', ['Password has been changed.']);
 }
 }

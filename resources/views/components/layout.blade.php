@@ -51,8 +51,8 @@
                                     </flux:menu.item>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
-                                        <flux:menu.item type="submit" icon="arrow-right-start-on-rectangle"
-                                            variant="danger">
+                                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle"
+                                            variant="danger" class="w-full text-left">
                                             Logout
                                         </flux:menu.item>
                                     </form>
