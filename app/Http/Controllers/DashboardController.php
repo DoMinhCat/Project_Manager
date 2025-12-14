@@ -44,11 +44,11 @@ class DashboardController extends Controller
         }
         else
         {
-            $projects->orderBy('id');
+            $sort === 'none';
         }
 
         $projects = $projects->get();
 
-        return view('dashboard', compact('tasksByStatus', 'overdueTasks', 'recentTasks', 'projects'));
+        return view('dashboard', compact('tasksByStatus', 'overdueTasks', 'recentTasks', 'projects','sort'));
     }
 }
