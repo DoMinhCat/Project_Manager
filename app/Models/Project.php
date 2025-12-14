@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -46,6 +47,15 @@ class Project extends Model
         }
 
         return false;
+    }
+
+    public function hasPermission(User $user): bool
+    {
+        if($this->owner_id != $user->id) {
+            return false;
+        }
+
+        return true;
     }
 
     // Relationship: One project -> many tasks

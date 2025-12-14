@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::with('tasks')->get(); 
+        $projects = Project::with('tasks')->where('owner_id', '=', Auth::user()->id)->get(); 
         return view('project.index', compact('projects'));
     }
 
@@ -50,10 +51,14 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        if($project->hasPermission(Auth::user()) == false){
+            return view('forbidden');
+        }
         return view('project.detail', [
             'project' => $project,
             'tasks' => $project->tasks
         ]);
+        
     }
 
     /**
@@ -69,6 +74,10 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+        if($project->hasPermission(Auth::user()) == false){
+            return view('forbidden');
+        }
+
         $validated = $request->validate([
             'name'        => 'required|min:3|max:30',
             'description' => 'nullable|max:255',
@@ -96,6 +105,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if($project->hasPermission(Auth::user()) == false){
+            return view('forbidden');
+        }
         $project->delete();
         return redirect()->back()->with('success', [$project->name . ' has been deleted.']);
     }

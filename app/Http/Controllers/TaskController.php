@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -29,6 +30,10 @@ class TaskController extends Controller
      */
     public function store(Request $request, Project $project)
     {
+        if($project->hasPermission(Auth::user()) == false){
+            return view('forbidden');
+        }
+        
         $validated = $request->validate([
             'name'        => 'required|min:3|max:255',
             'description' => 'nullable|max:1023',
@@ -72,6 +77,9 @@ class TaskController extends Controller
      */
     public function update(Request $request, Project $project, Task $task)
     {
+        if($project->hasPermission(Auth::user()) == false){
+            return view('forbidden');
+        }
         $validated = $request->validate([
             'name'        => 'required|min:3|max:255',
             'description' => 'nullable|max:1023',
@@ -96,6 +104,9 @@ class TaskController extends Controller
      */
     public function destroy(Project $project, Task $task)
     {
+        if($project->hasPermission(Auth::user()) == false){
+            return view('forbidden');
+        }
         $task->delete();
         $messages = [];
         $messages[] = $task->name . ' has been deleted.';
@@ -108,6 +119,10 @@ class TaskController extends Controller
 
     public function updateStatus(Request $request, Project $project, Task $task)
     {
+        if($project->hasPermission(Auth::user()) == false){
+            return view('forbidden');
+        }
+
         $validated = $request->validate([
             'status'        => 'required',
         ]);
