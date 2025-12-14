@@ -13,7 +13,11 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::with(['tasks', 'members'])->where('owner_id', Auth::id())->get();
+        $projects = Project::with(['tasks', 'members'])
+        ->where('owner_id', Auth::id())
+        ->orWhereHas('members', function ($query) {
+            $query->where('users.id', Auth::id());
+        })->get();
         return view('project.index', compact('projects'));
     }
 
@@ -74,7 +78,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        if($project->userPermission(Auth::user()) == null){
+        if($project->userPermission(Auth::user()) != 'edit' || $project->userPermission(Auth::user()) != 'owner'){
             abort(403, 'You don\'t have the right permission to perform this action.');
         }
 
@@ -105,7 +109,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        if($project->userPermission(Auth::user()) == null || $project->userPermission(Auth::user()) != 'owner'){
+        if($project->userPermission(Auth::user()) != 'owner'){
             abort(403, 'You don\'t have the right permission to perform this action.');
         }
         $project->delete();
@@ -114,6 +118,9 @@ class ProjectController extends Controller
 
     public function share(Request $request, Project $project)
     {
+        if($project->userPermission(Auth::user()) != 'edit' || $project->userPermission(Auth::user()) != 'owner'){
+            abort(403, 'You don\'t have the right permission to perform this action.');
+        }
         $validated = $request->validate([
             'users' => 'required|array',
             'users.*' => 'exists:users,id',
