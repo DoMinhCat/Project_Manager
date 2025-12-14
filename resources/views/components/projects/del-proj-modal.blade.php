@@ -1,7 +1,7 @@
 @props(['project'])
 
 <flux:modal.trigger name="{{ $project->id }}">
-    <flux:tooltip content="Delete">
+    <flux:tooltip content="Delete {{ $project->name }}">
         <flux:button size="sm" variant="danger" icon="trash" />
     </flux:tooltip>
 </flux:modal.trigger>

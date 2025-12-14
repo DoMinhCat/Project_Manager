@@ -30,7 +30,7 @@ class TaskController extends Controller
      */
     public function store(Request $request, Project $project)
     {
-        if($project->userPermission(Auth::user()) != 'owner' || $project->userPermission(Auth::user()) != 'edit'){
+        if($project->userPermission(Auth::user()) != 'owner' && $project->userPermission(Auth::user()) != 'edit'){
             abort(403, 'You don\'t have the right permission to perform this action.');
         }
         
@@ -77,7 +77,7 @@ class TaskController extends Controller
      */
     public function update(Request $request, Project $project, Task $task)
     {
-        if($project->userPermission(Auth::user()) != 'owner' || $project->userPermission(Auth::user()) != 'edit'){
+        if($project->userPermission(Auth::user()) != 'owner' && $project->userPermission(Auth::user()) != 'edit'){
             abort(403, 'You don\'t have the right permission to perform this action.');
         }
         $validated = $request->validate([
@@ -104,7 +104,7 @@ class TaskController extends Controller
      */
     public function destroy(Project $project, Task $task)
     {
-        if($project->userPermission(Auth::user()) != 'owner' || $project->userPermission(Auth::user()) != 'edit'){
+        if($project->userPermission(Auth::user()) != 'owner' && $project->userPermission(Auth::user()) != 'edit'){
             abort(403, 'You don\'t have the right permission to perform this action.');
         }
         $task->delete();

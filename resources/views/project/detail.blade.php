@@ -158,14 +158,11 @@
                                                         {{-- Edit --}}
                                                         <x-tasks.edit-task-modal :task="$task"></x-tasks.edit-task-modal>
                                                         {{-- Delete --}}
-                                                        @if($project->userPermission(Auth::user()) == 'owner')
-                                                            <x-tasks.del-task-modal :task="$task"></x-tasks.del-task-modal>
-                                                        @endif
+                                                        <x-tasks.del-task-modal :task="$task"></x-tasks.del-task-modal>
                                                     @else
                                                         <span class="text-sm text-gray-400">No action available</span>
                                                     @endif
                                                 </div>
-
                                             </td>
                                         </tr>
                                     @endforeach

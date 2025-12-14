@@ -55,9 +55,6 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        if($project->userPermission(Auth::user()) == null){
-            abort(403, 'You don\'t have the right permission to perform this action.');
-        }
         return view('project.detail', [
             'project' => $project,
             'tasks' => $project->tasks
@@ -78,7 +75,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        if($project->userPermission(Auth::user()) != 'edit' || $project->userPermission(Auth::user()) != 'owner'){
+        if($project->userPermission(Auth::user()) == 'view' || $project->userPermission(Auth::user()) == 'collaborate'){
             abort(403, 'You don\'t have the right permission to perform this action.');
         }
 
@@ -118,7 +115,7 @@ class ProjectController extends Controller
 
     public function share(Request $request, Project $project)
     {
-        if($project->userPermission(Auth::user()) != 'edit' || $project->userPermission(Auth::user()) != 'owner'){
+        if($project->userPermission(Auth::user()) != 'edit' && $project->userPermission(Auth::user()) != 'owner'){
             abort(403, 'You don\'t have the right permission to perform this action.');
         }
         $validated = $request->validate([

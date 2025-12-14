@@ -1,7 +1,7 @@
 @props(['task'])
 
 <flux:modal.trigger name="edit-task-{{ $task->id }}">
-    <flux:tooltip content="Edit">
+    <flux:tooltip content="Edit {{ $task->name }}">
         <flux:button size="sm" variant="primary" icon="pencil-square" color="yellow" />
     </flux:tooltip>
 </flux:modal.trigger>
