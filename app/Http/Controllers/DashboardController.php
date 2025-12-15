@@ -12,6 +12,7 @@ class DashboardController extends Controller
     {
         
         $sort = $request->query('sort');
+        $taskSort = $request->query('task_sort');
 
         $tasksByStatus = Task::all()->groupBy(function($task) {
             if ($task->status) return 'Completed';
@@ -25,6 +26,8 @@ class DashboardController extends Controller
 
         $recentTasks = Task::where('created_at', '>=', now()->subDays(7))->count();
         
+
+
         $projects = Project::with('tasks');
 
         if ($sort === 'priority') {
@@ -45,16 +48,53 @@ class DashboardController extends Controller
         elseif ($sort === 'name'){
             $projects->orderBy('name');
         }
-            elseif ($sort === 'number_of_tasks'){
-                $projects->withCount('tasks')
-                         ->orderBy('tasks_count', 'desc');
-            }
+        elseif ($sort === 'number_of_tasks'){
+            $projects->withCount('tasks')
+                     ->orderBy('tasks_count', 'desc');
+        }
         else
         {
             $sort === 'none';
         }
 
         $projects = $projects->get();
+
+
+
+        $tasks = Task::with('project');
+
+        if ($taskSort === 'priority') {
+            $tasks->orderByRaw("
+                CASE priority
+                    WHEN 'high' THEN 1
+                    WHEN 'medium' THEN 2
+                    WHEN 'low' THEN 3
+                END
+            ");
+        } 
+        elseif ($taskSort === 'due_at') {
+            $tasks->orderBy('due_at', 'asc');
+        } 
+        elseif ($taskSort === 'status') {
+            $tasks->orderBy('status', 'asc');
+        }
+        elseif ($taskSort === 'name'){
+            $tasks->orderBy('name');
+        }
+        elseif ($taskSort === 'project'){
+            $tasks->join('projects', 'tasks.project_id', '=', 'projects.id')
+                  ->select('tasks.*')
+                  ->orderBy('projects.name');
+        }
+        elseif ($taskSort === 'none') { 
+            $tasks->orderBy('id');
+        }
+        else
+        {
+            $taskSort === 'none';
+        }
+
+        $tasks = $tasks->get();
 
         $tasksCompletionRate = [
             'completed' => Task::where('status', true)->count(),
@@ -68,7 +108,9 @@ class DashboardController extends Controller
             'overdueTasks', 
             'recentTasks', 
             'projects',
+            'tasks',
             'sort',
+            'taskSort',
             'tasksCompletionRate',
             'tasksByProject'
         ));

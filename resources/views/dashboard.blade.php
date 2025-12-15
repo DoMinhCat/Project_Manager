@@ -72,7 +72,7 @@
         <div x-data="{ open: false }" class="bg-white p-4">
             <button @click="open = !open"
                 class="w-full flex items-center gap-2 rounded-lg border bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
-                Sort by
+                Sort projects by
                 <span>▾</span>
             </button>
 
@@ -102,7 +102,87 @@
         </div>
     </div>
 
-    <div class="w-full mb-6">
+    <!-- Section des tâches avec filtres -->
+    <div class="w-full responsive grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+        <div class="bg-white p-4 rounded shadow col-span-1 md:col-span-2">
+            <h2 class="font-semibold mb-2">Tasks overview</h2>
+
+            @foreach ($tasks as $task)
+                <div class="border p-2 mb-2 rounded">
+                    <h3 class="font-bold">{{ $task->name }}</h3>
+                    <p class="text-sm text-gray-600">Project:
+                        @if ($task->project)
+                            {{ $task->project->name }}
+                        @else
+                            <span class="text-gray-400">No project</span>
+                        @endif
+                    </p>
+                    <p class="flex items-center gap-1">
+                        <span>Status:</span>
+                        <span
+                            class="@if ($task->status) text-green-600 font-bold @else text-orange-500 font-bold @endif">
+                            {{ $task->status ? 'Completed' : 'In progress' }}
+                        </span>
+                    </p>
+                    <p class="flex items-center gap-1">
+                        <span>Priority:</span>
+                        <span
+                            class="@if ($task->priority === 'high') text-red-600 font-bold @elseif($task->priority === 'medium') text-orange-500 font-bold @else text-green-600 font-bold @endif">
+                            {{ ucfirst($task->priority) }}
+                        </span>
+                    </p>
+                    <p><span>Due date:</span>
+                        @if ($task->due_at)
+                            <span
+                                class="@if ($task->due_at < now() && !$task->status) text-red-600 font-bold @else text-blue-400 @endif">
+                                {{ $task->due_at->format('d/m/Y') }}
+                            </span>
+                        @else
+                            <span class="text-gray-400">No due date</span>
+                        @endif
+                    </p>
+                </div>
+            @endforeach
+        </div>
+
+        <div x-data="{ open: false }" class="bg-white p-4">
+            <button @click="open = !open"
+                class="w-full flex items-center gap-2 rounded-lg border bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
+                Sort tasks by
+                <span>▾</span>
+            </button>
+
+            <div x-show="open" @click.outside="open = false" x-transition
+                class="bg-gray-50 p-4 rounded-lg border shadow-lg">
+                <a href="{{ request()->fullUrlWithQuery(['task_sort' => 'none']) }}"
+                    class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $taskSort === 'none' || !$taskSort ? 'font-bold text-blue-600' : 'font-medium' }}">
+                    None
+                </a>
+                <a href="{{ request()->fullUrlWithQuery(['task_sort' => 'name']) }}"
+                    class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $taskSort === 'name' ? 'font-bold text-blue-600' : 'font-medium' }}">
+                    Name
+                </a>
+                <a href="{{ request()->fullUrlWithQuery(['task_sort' => 'status']) }}"
+                    class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $taskSort === 'status' ? 'font-bold text-blue-600' : 'font-medium' }}">
+                    Status
+                </a>
+                <a href="{{ request()->fullUrlWithQuery(['task_sort' => 'priority']) }}"
+                    class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $taskSort === 'priority' ? 'font-bold text-blue-600' : 'font-medium' }}">
+                    Priority
+                </a>
+                <a href="{{ request()->fullUrlWithQuery(['task_sort' => 'due_at']) }}"
+                    class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $taskSort === 'due_at' ? 'font-bold text-blue-600' : 'font-medium' }}">
+                    Due date
+                </a>
+                <a href="{{ request()->fullUrlWithQuery(['task_sort' => 'project']) }}"
+                    class="block px-4 py-2 font-medium hover:bg-gray-100 {{ $taskSort === 'project' ? 'font-bold text-blue-600' : 'font-medium' }}">
+                    Project
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full mb-6 mt-8">
         <h2 class="text-2xl font-semibold mb-4">Statistiques</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
