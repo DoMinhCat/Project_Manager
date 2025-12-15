@@ -56,6 +56,21 @@ class DashboardController extends Controller
 
         $projects = $projects->get();
 
-        return view('dashboard', compact('tasksByStatus', 'overdueTasks', 'recentTasks', 'projects','sort'));
+        $tasksCompletionRate = [
+            'completed' => Task::where('status', true)->count(),
+            'pending' => Task::where('status', false)->count()
+        ];
+
+        $tasksByProject = Project::withCount('tasks')->get()->pluck('tasks_count', 'name');
+
+        return view('dashboard', compact(
+            'tasksByStatus', 
+            'overdueTasks', 
+            'recentTasks', 
+            'projects',
+            'sort',
+            'tasksCompletionRate',
+            'tasksByProject'
+        ));
     }
 }
