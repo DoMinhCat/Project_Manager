@@ -37,7 +37,7 @@ class DashboardController extends Controller
             ");
         } 
         elseif ($sort === 'due_at') {
-            $projects->orderBy('due_at', 'desc');
+            $projects->orderBy('due_at', 'asc');
         } 
         elseif ($sort === 'none') { 
             $projects->orderBy('id');
