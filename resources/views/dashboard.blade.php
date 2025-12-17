@@ -48,7 +48,9 @@
 
             @foreach ($projects as $project)
                 <div class="border p-2 mb-2 rounded">
-                    <h3 class=" font-bold">{{ $project->name }} ({{ ucfirst(str_replace('_', ' ', $project->status)) }})
+                    <h3 class=" font-bold">
+                        <a href="{{ route('project.detail', $project) }}">{{ $project->name }}</a>
+                        ({{ ucfirst(str_replace('_', ' ', $project->status)) }})
                     </h3>
                     <p>Total tasks: {{ $project->tasks->count() }}</p>
                     <p class="flex items-center gap-1">
@@ -103,14 +105,15 @@
         </div>
     </div>
 
-    <!-- Section des tâches avec filtres -->
     <div class="w-full responsive grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         <div class="bg-white p-4 rounded shadow col-span-1 md:col-span-2">
             <h2 class="font-semibold mb-2">Tasks overview</h2>
 
             @foreach ($tasks as $task)
                 <div class="border p-2 mb-2 rounded">
-                    <h3 class="font-bold">{{ $task->name }}</h3>
+                    <h3 class="font-bold"><a
+                            href="{{ route('task.detail', ['project' => $task->project, 'task' => $task]) }}">{{ $task->name }}</a>
+                    </h3>
                     <p class="text-sm text-gray-600">Project:
                         @if ($task->project)
                             {{ $task->project->name }}
@@ -120,7 +123,8 @@
                     </p>
                     <p class="flex items-center gap-1">
                         <span>Status:</span>
-                        <span class="@if ($task->status) text-green-600 font-bold @else text-orange-500 font-bold @endif">
+                        <span
+                            class="@if ($task->status) text-green-600 font-bold @else text-orange-500 font-bold @endif">
                             {{ $task->status ? 'Completed' : 'In progress' }}
                         </span>
                     </p>
@@ -227,7 +231,7 @@
                     },
                     tooltip: {
                         callbacks: {
-                            label: function (context) {
+                            label: function(context) {
                                 const total = completedTasks + pendingTasks;
                                 const percentage = total > 0 ? Math.round((context.parsed / total) * 100) : 0;
                                 return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
