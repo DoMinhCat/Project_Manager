@@ -48,7 +48,8 @@
 
             @foreach ($projects as $project)
                 <div class="border p-2 mb-2 rounded">
-                    <h3 class=" font-bold">{{ $project->name }} ({{ $project->status }})</h3>
+                    <h3 class=" font-bold">{{ $project->name }} ({{ ucfirst(str_replace('_', ' ', $project->status)) }})
+                    </h3>
                     <p>Total tasks: {{ $project->tasks->count() }}</p>
                     <p class="flex items-center gap-1">
                         <span>Priority:</span>
@@ -119,8 +120,7 @@
                     </p>
                     <p class="flex items-center gap-1">
                         <span>Status:</span>
-                        <span
-                            class="@if ($task->status) text-green-600 font-bold @else text-orange-500 font-bold @endif">
+                        <span class="@if ($task->status) text-green-600 font-bold @else text-orange-500 font-bold @endif">
                             {{ $task->status ? 'Completed' : 'In progress' }}
                         </span>
                     </p>
@@ -227,7 +227,7 @@
                     },
                     tooltip: {
                         callbacks: {
-                            label: function(context) {
+                            label: function (context) {
                                 const total = completedTasks + pendingTasks;
                                 const percentage = total > 0 ? Math.round((context.parsed / total) * 100) : 0;
                                 return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
