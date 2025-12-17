@@ -48,7 +48,7 @@
 
             @foreach ($projects as $project)
                 <div class="border p-2 mb-2 rounded">
-                    <h3 class=" font-bold">
+                    <h3 class=" font-bold underline">
                         <a href="{{ route('project.detail', $project) }}">{{ $project->name }}</a>
                         ({{ ucfirst(str_replace('_', ' ', $project->status)) }})
                     </h3>
@@ -111,7 +111,7 @@
 
             @foreach ($tasks as $task)
                 <div class="border p-2 mb-2 rounded">
-                    <h3 class="font-bold"><a
+                    <h3 class="font-bold underline"><a
                             href="{{ route('task.detail', ['project' => $task->project, 'task' => $task]) }}">{{ $task->name }}</a>
                     </h3>
                     <p class="text-sm text-gray-600">Project:
