@@ -49,8 +49,9 @@
             @foreach ($projects as $project)
                 <div class="border p-2 mb-2 rounded">
                     <h3 class=" font-bold underline">
-                        <a href="{{ route('project.detail', $project) }}">{{ $project->name }}</a>
-                        ({{ ucfirst(str_replace('_', ' ', $project->status)) }})
+                        <a href="{{ route('project.detail', $project) }}">{{ $project->name }}
+                            ({{ ucfirst(str_replace('_', ' ', $project->status)) }})
+                        </a>
                     </h3>
                     <p>Total tasks: {{ $project->tasks->count() }}</p>
                     <p class="flex items-center gap-1">
